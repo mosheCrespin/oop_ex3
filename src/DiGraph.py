@@ -2,12 +2,38 @@ from src.GraphInterface import GraphInterface
 
 
 class NodeData:
-    def __init__(self, node_id: int, pos: tuple = None):
+    def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
         self.node_id = node_id
         self.pos = pos
+        self.prev = prev
+        self.distance = distance
 
     def __repr__(self):
         return repr((self.node_id, self.pos))
+
+    def __eq__(self, other):
+        if isinstance(other, NodeData):
+            return self.node_id == other.node_id
+
+    def __cmp__(self, other):
+        if isinstance(other, NodeData):
+            if (self.distance > other.distance):
+                return 1
+            if (self.distance < other.distance):
+                return -1
+            return 0
+
+    def get_prev(self):
+        return self.prev
+
+    def set_prev(self, prev: int):
+        self.prev = prev
+
+    def get_distance(self):
+        return self.prev
+
+    def set_distance(self, distance: float):
+        self.distance = distance
 
 
 class DiGraph(GraphInterface):
@@ -31,6 +57,11 @@ class DiGraph(GraphInterface):
 
     def has_edge(self, id1: int, id2: int) -> bool:
         return not self.out_edges.get(id1).get(id2) is None
+
+
+    def get_node (self, node_id: int) -> NodeData:
+        return self.my_graph.get(node_id)
+
 
     def get_weight(self, id1: int, id2: int) -> float:
         if not self.has_edge(id1, id2):
