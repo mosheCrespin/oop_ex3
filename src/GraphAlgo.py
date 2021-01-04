@@ -36,9 +36,13 @@ class GraphAlgo(GraphAlgoInterface):
         deep_copied_graph.set_out_edges(deep_copied_graph.in_edges)
         deep_copied_graph.set_in_edges(temp)
         temporary_list = []
+        temp_algo=self.graph
+        self.graph=deep_copied_graph
         for i in deep_copied_graph.get_all_v().keys():
-            if self.shortest_path(id1, i) is not (float('inf'), []):
+            a=self.shortest_path(id1, i)
+            if a is not (float('inf'), []):
                 temporary_list.append(i)
+        self.graph=temp_algo
         return intersection(list_component, temporary_list)
 
     def connected_components(self) -> List[list]:
@@ -109,5 +113,10 @@ class GraphAlgo(GraphAlgoInterface):
             node.set_distance(-1)
 
     def plot_graph(self) -> None:
-        self.get_graph().in_edges
+       components=self.connected_components()
+       min=0
+       max=10
+
+
+
 
