@@ -65,7 +65,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         if id1 == id2:
             path = 0
-            path_list.append(self)
+            path_list.append(id1)
             return (path, path_list)
 
         self.reset_prevAndDist()
@@ -73,15 +73,14 @@ class GraphAlgo(GraphAlgoInterface):
 
         path = self.graph.get_node(id2).distance
 
-        if (path != -1):
-
+        if path != -1:
             path_list.insert(0, id2)
             node_prev = self.graph.get_node(id2).prev
-
-            while (node_prev != id1):
+            while node_prev != id1:
                 path_list.insert(0, node_prev)
                 node_prev = self.graph.get_node(node_prev).prev
             path_list.insert(0, id1)
+
         else:
             path = float('inf')
 
@@ -93,9 +92,7 @@ class GraphAlgo(GraphAlgoInterface):
         node_curr.set_prev(start)
         node_curr.set_distance(0)
         priority_qeueu.put(node_curr)
-
-        while (priority_qeueu.qsize() != 0 and node_curr.id() != dest):
-
+        while(priority_qeueu.qsize() != 0 and node_curr.id() != dest):
             node_curr = priority_qeueu.get()
 
             for key in self.graph.all_out_edges_of_node(node_curr.id()).keys():
