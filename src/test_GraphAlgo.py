@@ -41,9 +41,9 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(7, 6, 10)
         g.add_edge(6, 7, 10)
         graph = GraphAlgo(g)
-        print(graph.shortest_path(1, 2))
+        print(graph.shortest_path(4, 1))
 
-        # print(graph.connected_component(1))
+        # print(graph.connected_component(4))
 
 if __name__ == '__main__':
     unittest.main()
