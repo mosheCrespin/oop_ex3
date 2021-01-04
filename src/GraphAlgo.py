@@ -5,8 +5,7 @@ from queue import PriorityQueue as PQ
 import copy
 import collections
 from typing import List
-import numpy as np
-import matplotlib.pyplot as plt
+import json
 
 
 def intersection(l1, l2):
@@ -29,20 +28,21 @@ class GraphAlgo(GraphAlgoInterface):
     def connected_component(self, id1: int) -> list:
         list_component = []
         for i in self.graph.get_all_v().keys():
-            if self.shortest_path(id1, i) is not (float('inf'), []):
+            w, p = self.shortest_path(id1, i)
+            if w != float('inf') and len(p) != 0:
                 list_component.append(i)
         deep_copied_graph = copy.deepcopy(self.graph)
         temp = deep_copied_graph.get_out_edges()
         deep_copied_graph.set_out_edges(deep_copied_graph.in_edges)
         deep_copied_graph.set_in_edges(temp)
+        temp_graph = self.graph
+        self.graph = deep_copied_graph
         temporary_list = []
-        temp_algo=self.graph
-        self.graph=deep_copied_graph
         for i in deep_copied_graph.get_all_v().keys():
-            a=self.shortest_path(id1, i)
-            if a is not (float('inf'), []):
+            w, p = self.shortest_path(id1, i)
+            if w != float('inf') and len(p) != 0:
                 temporary_list.append(i)
-        self.graph=temp_algo
+        self.graph = temp_graph
         return intersection(list_component, temporary_list)
 
     def connected_components(self) -> List[list]:
@@ -53,12 +53,14 @@ class GraphAlgo(GraphAlgoInterface):
                 ans.append(temp)
         return ans
 
+    def plot_graph(self) -> None:
+        pass
+
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         path = float('inf')
         path_list = []
 
-        if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.all_in_edges_of_node(
-                id2) == {} or self.graph.all_in_edges_of_node(id2) == None:
+        if not self.graph.has_node(id1) or not self.graph.has_node(id2):
             return (path, path_list)
 
         if id1 == id2:
@@ -70,10 +72,12 @@ class GraphAlgo(GraphAlgoInterface):
         self.dijkstra(id1, id2)
 
         path = self.graph.get_node(id2).distance
-        path_list.insert(0, id2)
-        node_prev = self.graph.get_node(id2).prev
 
         if (path != -1):
+
+            path_list.insert(0, id2)
+            node_prev = self.graph.get_node(id2).prev
+
             while (node_prev != id1):
                 path_list.insert(0, node_prev)
                 node_prev = self.graph.get_node(node_prev).prev
@@ -90,7 +94,7 @@ class GraphAlgo(GraphAlgoInterface):
         node_curr.set_distance(0)
         priority_qeueu.put(node_curr)
 
-        while (priority_qeueu.not_empty and node_curr.id() != dest):
+        while (priority_qeueu.qsize() != 0 and node_curr.id() != dest):
 
             node_curr = priority_qeueu.get()
 
@@ -113,10 +117,6 @@ class GraphAlgo(GraphAlgoInterface):
             node.set_distance(-1)
 
     def plot_graph(self) -> None:
-       components=self.connected_components()
-       min=0
-       max=10
-
-
-
-
+        components = self.connected_components()
+        min = 0
+        max = 10
