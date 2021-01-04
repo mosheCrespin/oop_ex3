@@ -20,6 +20,7 @@ class TestStringMethods(unittest.TestCase):
             g0.add_node(i)
         for i in range(0, 10):
             g0.add_edge(i, 9 - i, 0.2)
+        self.assertFalse(g0.add_edge(3, 12, 2))  # added an edge between noedes that not exist
         self.assertEqual(10, g0.e_size())
         self.assertEqual(20, g0.get_mc())
         self.assertFalse(g0.add_edge(0, 9, 3))  # added exited edge
@@ -134,3 +135,12 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(18, g0.get_mc())
         g0.remove_node(2)  # adding twice
         self.assertEqual(18, g0.get_mc())
+
+    def test_get_weight(self):
+        g0 = DiGraph()
+        for i in range(0, 10):
+            g0.add_node(i)
+        g0.add_edge(4, 3, 1)
+        g0.add_edge(4, 3, 0.5)  # should not update
+        self.assertEqual(1, g0.get_weight(4, 3))
+        self.assertEqual(-1, g0.get_weight(4, 5))  # there is no edge

@@ -32,8 +32,14 @@ class DiGraph(GraphInterface):
     def has_edge(self, id1: int, id2: int) -> bool:
         return not self.out_edges.get(id1).get(id2) is None
 
+    def get_weight(self, id1: int, id2: int) -> float:
+        if not self.has_edge(id1, id2):
+            return -1
+        else:
+            return self.out_edges.get(id1).get(id2)
+
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        if not self.has_node(id1) and not self.has_node(id2):
+        if not self.has_node(id1) or not self.has_node(id2):
             return False
         if self.has_edge(id1, id2):
             return False
@@ -59,13 +65,13 @@ class DiGraph(GraphInterface):
 
     def remove_node(self, node_id: int) -> bool:
         if not self.has_node(node_id): return False
-        counter=0
+        counter = 0
         for i in self.in_edges[node_id]:
             del self.out_edges[i][node_id]
-            counter+=1
+            counter += 1
         for i in self.out_edges[node_id]:
             del self.in_edges[i][node_id]
-            counter+=1
+            counter += 1
         del self.my_graph[node_id]
         del self.out_edges[node_id]
         del self.in_edges[node_id]
