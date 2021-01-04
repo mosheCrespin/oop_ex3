@@ -67,6 +67,7 @@ class TestStringMethods(unittest.TestCase):
             g0.add_edge(i, 9 - i, 0.2)
         self.assertEqual(10, g0.e_size())
 
+
     def test_get_all_v(self):
         g0 = DiGraph()
         flag = True
