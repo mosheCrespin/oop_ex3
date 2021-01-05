@@ -1,6 +1,5 @@
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
-from src.DiGraph import NodeData
 import GraphInterface
 from queue import PriorityQueue as PQ
 from typing import List
@@ -27,8 +26,22 @@ class GraphAlgo(GraphAlgoInterface):
     def load_from_json(self, file_name: str) -> bool:
         pass
 
+    def serialize(self):
+        to_dict = {}
+        edge_to_dict = []
+        to_dict["Nodes"] = [node for node in self.graph.my_graph.values()]
+        edge_to_dict.append(self.graph.all_edges)
+        to_dict["Edges"] = edge_to_dict
+        return to_dict
+
     def save_to_json(self, file_name: str) -> bool:
-        pass
+        graph_to_dict = self.serialize()
+        try:
+            with open(file_name, "w") as file:
+                json.dump(graph_to_dict, default = lambda l: l.as_dict(), indent=4, fp=file)
+        except IOError as exp:
+            print(exp)
+
 
     def dfs_algorithm_find_connected_nodes(self, id: int) -> list:
         stack = deque()
@@ -81,6 +94,7 @@ class GraphAlgo(GraphAlgoInterface):
             path_list.append(id1)
             return (path, path_list)
 
+
         self.reset_prevAndDist()
         self.dijkstra(id1, id2)
 
@@ -105,19 +119,19 @@ class GraphAlgo(GraphAlgoInterface):
         node_curr.set_prev(start)
         node_curr.set_distance(0)
         priority_qeueu.put(node_curr)
-        while (priority_qeueu.qsize() != 0 and node_curr.id() != dest):
-            node_curr = priority_qeueu.get()
 
+        while priority_qeueu.qsize() != 0 and node_curr.id() != dest:
+            node_curr = priority_qeueu.get()
             for key in self.graph.all_out_edges_of_node(node_curr.id()).keys():
                 node_na = self.graph.get_node(key)
                 edge_weight = self.graph.get_weight(node_curr.id(), key)
 
-                if (node_na.prev == -1):
+                if node_na.prev == -1:
                     node_na.set_prev(node_curr.id())
                     node_na.set_distance(node_curr.distance + edge_weight)
                     priority_qeueu.put(node_na)
 
-                elif (node_na.distance > node_curr.distance + edge_weight):
+                elif node_na.distance > node_curr.distance + edge_weight:
                     node_na.set_prev(node_curr.id())
                     node_na.set_distance(node_curr.distance + edge_weight)
 

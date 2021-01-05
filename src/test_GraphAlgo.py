@@ -89,5 +89,25 @@ class MyTestCase(unittest.TestCase):
         graph.plot_graph()
 
 
+    def test_save_to_json(self):
+        g = DiGraph()
+        for i in range(1, 8):
+            g.add_node(i)
+        g.add_edge(1, 2, 10)
+        g.add_edge(2, 1, 10)
+        g.add_edge(1, 3, 10)
+        g.add_edge(3, 1, 10)
+        g.add_edge(2, 4, 10)
+        g.add_edge(3, 4, 10)
+        g.add_edge(1, 7, 10)
+        g.add_edge(7, 5, 10)
+        g.add_edge(5, 7, 10)
+        g.add_edge(7, 6, 10)
+        g.add_edge(6, 7, 10)
+        graph = GraphAlgo(g)
+        file = "test.json"
+        graph.save_to_json(file)
+
+
 if __name__ == '__main__':
     unittest.main()

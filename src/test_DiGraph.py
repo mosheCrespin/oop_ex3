@@ -104,6 +104,7 @@ class TestStringMethods(unittest.TestCase):
         g0.add_edge(1, 2, 1)
         g0.add_edge(5, 3, 1)
         g0.add_edge(4, 5, 1)
+        temp = g0.all_out_edges_of_node(4)
         self.assertEqual(3, len(g0.all_out_edges_of_node(4)))
         g0.add_edge(4, 6, 1)
         self.assertEqual(4, len(g0.all_out_edges_of_node(4)))

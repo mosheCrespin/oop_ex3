@@ -2,11 +2,23 @@ from src.GraphInterface import GraphInterface
 import random
 
 
+# class EdgeData:
+#     def __init__(self, src: int, dest: int, w: float):
+#         self.src = src
+#         self.dest = dest
+#         self.w = w
+#
+#     def __repr__(self):
+#         return repr((self.src, self.dest, self.w))
+#
+#     def as_dict(self):
+#         dict_edge = self.__dict__
+#         return dict_edge
 
 class NodeData:
     random.seed(10)
     def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
-        self.node_id = node_id
+        self.id = node_id
         self.pos = pos
         self.prev = prev
         self.distance = distance
@@ -15,18 +27,16 @@ class NodeData:
             y = random.uniform(1, 2)
             self.pos = (x, y, 0.0)
 
-    def get_node_id(self):
-        return self.node_id
 
     def get_pos(self):
         return self.pos
 
     def __repr__(self):
-        return repr((self.node_id, self.pos))
+        return repr((self.id, self.pos))
 
     def __eq__(self, other):
         if isinstance(other, NodeData):
-            return self.node_id == other.node_id
+            return self.id == other.id
 
     def __lt__(self, other):
         if isinstance(other, NodeData):
@@ -35,15 +45,20 @@ class NodeData:
             else:
                 return 0
 
-    def id(self):
-        return self.node_id
-
     def set_prev(self, prev: int):
         self.prev = prev
 
     def set_distance(self, distance: float):
         self.distance = distance
 
+    def as_dict(self):
+        dict = self.__dict__
+        try:
+            del dict["prev"]
+            del dict["distance"]
+        except Exception as exc:
+            print(exc)
+        return dict
 
 class DiGraph(GraphInterface):
 
@@ -54,6 +69,7 @@ class DiGraph(GraphInterface):
         self.my_graph = {}
         self.out_edges = {}
         self.in_edges = {}
+        # self.all_edges = []
 
     def v_size(self) -> int:
         return self.number_of_nodes
@@ -85,6 +101,9 @@ class DiGraph(GraphInterface):
         self.in_edges[id2][id1] = weight
         self.amount_of_changes += 1
         self.number_of_edges += 1
+        # edge = EdgeData(id1, id2, weight)
+        # self.all_edges.append(edge)
+
         return True
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
