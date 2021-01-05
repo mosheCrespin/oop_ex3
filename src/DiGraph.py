@@ -23,14 +23,11 @@ class NodeData:
                 return -1
             return 0
 
-    def get_prev(self):
-        return self.prev
+    def id(self):
+        return self.node_id
 
     def set_prev(self, prev: int):
         self.prev = prev
-
-    def get_distance(self):
-        return self.prev
 
     def set_distance(self, distance: float):
         self.distance = distance
