@@ -16,7 +16,10 @@ def intersection(l1, l2):
 
 class GraphAlgo(GraphAlgoInterface):
     def __init__(self, g: DiGraph = None):
-        self.graph = g
+        if g is None:
+            g = DiGraph()
+        else:
+            self.graph = g
 
     def get_graph(self) -> GraphInterface:
         return self.graph
@@ -125,7 +128,8 @@ class GraphAlgo(GraphAlgoInterface):
 
     def drawArrow(self, p1, p2):
         plt.arrow(p1[0], p1[1], p2[0] - p1[0], p2[1] - p1[1],
-                  visible=True,linewidth=0.5,ec="blue",head_width=0.033,fc="blue", in_layout=True,length_includes_head=True)
+                  visible=True, linewidth=0.5, ec="blue", head_width=0.033, fc="blue", in_layout=True,
+                  length_includes_head=True)
 
     def plot_graph(self) -> None:
         fig, ax = plt.subplots()
