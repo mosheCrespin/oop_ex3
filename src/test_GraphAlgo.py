@@ -72,21 +72,27 @@ class MyTestCase(unittest.TestCase):
 
 
     def test_plot(self):
+        # file_name = "test20.json"
+        # graph = GraphAlgo()
+        # graph.load_from_json(file_name)
+        # graph.plot_graph()
         g = DiGraph()
-        graph = GraphAlgo(g)
-        for i in range(1, 20):
+        for i in range(1, 8):
             g.add_node(i)
         g.add_edge(1, 2, 10)
         g.add_edge(2, 1, 10)
-        g.add_edge(1, 3, 1)
+        g.add_edge(1, 3, 10)
         g.add_edge(3, 1, 10)
         g.add_edge(2, 4, 10)
+        g.add_edge(3, 4, 10)
         g.add_edge(1, 7, 10)
         g.add_edge(7, 5, 10)
         g.add_edge(5, 7, 10)
         g.add_edge(7, 6, 10)
         g.add_edge(6, 7, 10)
+        graph = GraphAlgo(g)
         graph.plot_graph()
+
 
 
     def test_save_to_json(self):
@@ -105,8 +111,22 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(7, 6, 10)
         g.add_edge(6, 7, 10)
         graph = GraphAlgo(g)
-        file = "test.json"
+        file = "test4.json"
         graph.save_to_json(file)
+
+    def test_load_from_json(self):
+        file_name="test20.json"
+        graph = GraphAlgo()
+        graph.load_from_json(file_name)
+        # graph.plot_graph()
+        # file = "test20.json"
+        # graph.save_to_json(file)
+        # print(graph.shortest_path(2,5))
+        print(graph.connected_components())
+
+
+
+
 
 
 if __name__ == '__main__':

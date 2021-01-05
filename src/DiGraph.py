@@ -1,35 +1,25 @@
 from src.GraphInterface import GraphInterface
 import random
-
-
-# class EdgeData:
-#     def __init__(self, src: int, dest: int, w: float):
-#         self.src = src
-#         self.dest = dest
-#         self.w = w
-#
-#     def __repr__(self):
-#         return repr((self.src, self.dest, self.w))
-#
-#     def as_dict(self):
-#         dict_edge = self.__dict__
-#         return dict_edge
+import copy
 
 class NodeData:
     random.seed(10)
+
     def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
         self.id = node_id
         self.pos = pos
         self.prev = prev
         self.distance = distance
         if pos is None:
-            x = random.uniform(1, 2)
-            y = random.uniform(1, 2)
+            x = random.uniform(35, 35.1)
+            y = random.uniform(32, 32.1)
             self.pos = (x, y, 0.0)
-
 
     def get_pos(self):
         return self.pos
+
+    def get_node_id(self):
+        return self.id
 
     def __repr__(self):
         return repr((self.id, self.pos))
@@ -52,13 +42,18 @@ class NodeData:
         self.distance = distance
 
     def as_dict(self):
-        dict = self.__dict__
+        dict = copy.deepcopy(self.__dict__)
         try:
             del dict["prev"]
             del dict["distance"]
+
+            x,y,z=self.pos
+            converted_pos=f"{x},{y},{z} jkj"
+            dict["pos"]=converted_pos
         except Exception as exc:
             print(exc)
         return dict
+
 
 class DiGraph(GraphInterface):
 
@@ -69,7 +64,6 @@ class DiGraph(GraphInterface):
         self.my_graph = {}
         self.out_edges = {}
         self.in_edges = {}
-        # self.all_edges = []
 
     def v_size(self) -> int:
         return self.number_of_nodes
@@ -101,8 +95,6 @@ class DiGraph(GraphInterface):
         self.in_edges[id2][id1] = weight
         self.amount_of_changes += 1
         self.number_of_edges += 1
-        # edge = EdgeData(id1, id2, weight)
-        # self.all_edges.append(edge)
 
         return True
 

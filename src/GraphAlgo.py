@@ -1,3 +1,5 @@
+from matplotlib.patches import FancyArrowPatch
+
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
 import GraphInterface
@@ -24,13 +26,43 @@ class GraphAlgo(GraphAlgoInterface):
         return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
-        pass
+        try:
+            with open(file_name, "r") as file:
+                loaded_graph=DiGraph()
+                f=json.load(file)
+                print(f.get("Edges"))
+                for node in f.get("Nodes"):
+                    id=node.get("id")
+                    pos=None
+                    if node.get("pos") is not None:
+                        list_pos=node.get("pos").split(",")
+                        x=float(list_pos[0])
+                        y=float(list_pos[1])
+                        z=float(list_pos[2])
+                        pos=(x,y,z)
+                    loaded_graph.add_node(id,pos)
+                for edge in f.get("Edges"):
+                    src=edge.get("src")
+                    dest=edge.get("dest")
+                    w=edge.get("w")
+                    loaded_graph.add_edge(src,dest,w)
+                self.graph=loaded_graph
+
+        except IOError as exp:
+            print(exp)
+            return False
+        return True
 
     def serialize(self):
         to_dict = {}
         edge_to_dict = []
         to_dict["Nodes"] = [node for node in self.graph.my_graph.values()]
-        edge_to_dict.append(self.graph.all_edges)
+        temp={}
+        for src in self.graph.my_graph:
+            for dest , weight in self.get_graph().all_out_edges_of_node(src).items():
+                temp={"src": src, "dest" : dest , "w": weight }
+                edge_to_dict.append(temp)
+
         to_dict["Edges"] = edge_to_dict
         return to_dict
 
@@ -39,8 +71,11 @@ class GraphAlgo(GraphAlgoInterface):
         try:
             with open(file_name, "w") as file:
                 json.dump(graph_to_dict, default = lambda l: l.as_dict(), indent=4, fp=file)
+
         except IOError as exp:
             print(exp)
+            return False
+        return True
 
 
     def dfs_algorithm_find_connected_nodes(self, id: int) -> list:
@@ -120,19 +155,19 @@ class GraphAlgo(GraphAlgoInterface):
         node_curr.set_distance(0)
         priority_qeueu.put(node_curr)
 
-        while priority_qeueu.qsize() != 0 and node_curr.id() != dest:
+        while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest:
             node_curr = priority_qeueu.get()
-            for key in self.graph.all_out_edges_of_node(node_curr.id()).keys():
+            for key in self.graph.all_out_edges_of_node( node_curr.get_node_id()).keys():
                 node_na = self.graph.get_node(key)
-                edge_weight = self.graph.get_weight(node_curr.id(), key)
+                edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
 
                 if node_na.prev == -1:
-                    node_na.set_prev(node_curr.id())
+                    node_na.set_prev( node_curr.get_node_id())
                     node_na.set_distance(node_curr.distance + edge_weight)
                     priority_qeueu.put(node_na)
 
                 elif node_na.distance > node_curr.distance + edge_weight:
-                    node_na.set_prev(node_curr.id())
+                    node_na.set_prev( node_curr.get_node_id())
                     node_na.set_distance(node_curr.distance + edge_weight)
 
     def reset_prevAndDist(self):
@@ -142,7 +177,7 @@ class GraphAlgo(GraphAlgoInterface):
 
     def drawArrow(self, p1, p2):
         plt.arrow(p1[0], p1[1], p2[0] - p1[0], p2[1] - p1[1],
-                  visible=True, linewidth=0.5, ec="blue", head_width=0.033, fc="blue", in_layout=True,
+                  visible=False, linewidth=0.5, ec="blue", head_width=0.033, fc="blue", in_layout=True,
                   length_includes_head=True)
 
     def plot_graph(self) -> None:
