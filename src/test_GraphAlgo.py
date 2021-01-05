@@ -19,6 +19,10 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(path, p)
         self.assertEqual(path_list, pl)
 
+        (path0, path_list0) = (float('inf'), [])
+        (p0, pl0) = graph.shortest_path(4, 0)
+        self.assertEqual(path0, p0)
+        self.assertEqual(path_list0, pl0)
 
 
 if __name__ == '__main__':

@@ -55,7 +55,7 @@ class GraphAlgo(GraphAlgoInterface):
         path = float('inf')
         path_list = []
 
-        if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.all_in_edges_of_node(id2) is None:
+        if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.in_edges[id2] == {} or self.graph.in_edges[id2] == None:
             return (path, path_list)
 
         if id1 == id2:
