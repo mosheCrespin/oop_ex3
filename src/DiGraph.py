@@ -17,9 +17,9 @@ class NodeData:
 
     def __cmp__(self, other):
         if isinstance(other, NodeData):
-            if (self.distance > other.distance):
+            if self.distance > other.distance:
                 return 1
-            if (self.distance < other.distance):
+            if self.distance < other.distance:
                 return -1
             return 0
 
@@ -55,10 +55,8 @@ class DiGraph(GraphInterface):
     def has_edge(self, id1: int, id2: int) -> bool:
         return not self.out_edges.get(id1).get(id2) is None
 
-
-    def get_node (self, node_id: int) -> NodeData:
+    def get_node(self, node_id: int) -> NodeData:
         return self.my_graph.get(node_id)
-
 
     def get_weight(self, id1: int, id2: int) -> float:
         if not self.has_edge(id1, id2):
@@ -129,3 +127,12 @@ class DiGraph(GraphInterface):
     def all_out_edges_of_node(self, id1: int) -> dict:
         if not self.has_node(id1): return None
         return self.out_edges[id1]
+
+    def get_out_edges(self) -> dict:
+        return self.out_edges
+
+    def set_out_edges(self, other: dict) -> None:
+        self.out_edges = other
+
+    def set_in_edges(self, other: dict) -> None:
+        self.in_edges = other

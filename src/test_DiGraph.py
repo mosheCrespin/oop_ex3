@@ -144,3 +144,7 @@ class TestStringMethods(unittest.TestCase):
         g0.add_edge(4, 3, 0.5)  # should not update
         self.assertEqual(1, g0.get_weight(4, 3))
         self.assertEqual(-1, g0.get_weight(4, 5))  # there is no edge
+
+
+if __name__ == '__main__':
+    unittest.main()
