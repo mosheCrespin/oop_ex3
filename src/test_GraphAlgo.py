@@ -10,11 +10,12 @@ class MyTestCase(unittest.TestCase):
         i = 0
         g.add_edge(0, 1, 10)
         g.add_edge(1, 2, 10)
+        g.add_edge(0, 2, 5)
         g.add_edge(2, 3, 10)
         g.add_edge(3, 4, 10)
 
         graph = GraphAlgo(g)
-        (path, path_list) = (40, [0, 1, 2, 3, 4])
+        (path, path_list) = (25, [0, 2, 3, 4])
         (p, pl) = graph.shortest_path(0, 4)
         self.assertEqual(path, p)
         self.assertEqual(path_list, pl)

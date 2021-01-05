@@ -15,13 +15,12 @@ class NodeData:
         if isinstance(other, NodeData):
             return self.node_id == other.node_id
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
         if isinstance(other, NodeData):
-            if self.distance > other.distance:
-                return 1
             if self.distance < other.distance:
-                return -1
-            return 0
+                return 1
+            else:
+                return 0
 
     def id(self):
         return self.node_id
