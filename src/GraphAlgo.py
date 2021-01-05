@@ -25,24 +25,24 @@ class GraphAlgo(GraphAlgoInterface):
         pass
 
     def connected_component(self, id1: int) -> list:
-        list_component=[]
+        list_component = []
         for i in self.graph.get_all_v().keys():
-            if self.shortest_path(id1,i) is not (float('inf'),[]):
+            if self.shortest_path(id1, i) is not (float('inf'), []):
                 list_component.append(i)
-        deep_copied_graph=copy.deepcopy(self.graph)
-        temp=deep_copied_graph.get_out_edges()
+        deep_copied_graph = copy.deepcopy(self.graph)
+        temp = deep_copied_graph.get_out_edges()
         deep_copied_graph.set_out_edges(deep_copied_graph.in_edges)
         deep_copied_graph.set_in_edges(temp)
-        temporary_list=[]
+        temporary_list = []
         for i in deep_copied_graph.get_all_v().keys():
-            if self.shortest_path(id1,i) is not (float('inf'),[]):
+            if self.shortest_path(id1, i) is not (float('inf'), []):
                 temporary_list.append(i)
-        return intersection(list_component,temporary_list)
+        return intersection(list_component, temporary_list)
 
     def connected_components(self) -> List[list]:
-        ans=[]
+        ans = []
         for i in self.graph.get_all_v():
-            temp=sorted(self.connected_component(i))
+            temp = sorted(self.connected_component(i))
             if temp not in ans:
                 ans.append(temp)
         return ans
@@ -60,7 +60,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         if id1 == id2:
             path = 0
-            path_list.append(self)
+            path_list.append(id1)
             return (path, path_list)
 
         self.reset_prevAndDist()
@@ -68,15 +68,16 @@ class GraphAlgo(GraphAlgoInterface):
 
         path = self.graph.get_node(id2).distance
 
-        if(path != -1):
+        if path != -1:
 
             path_list.insert(0, id2)
             node_prev = self.graph.get_node(id2).prev
 
-            while(node_prev != id1):
+            while node_prev != id1:
                 path_list.insert(0, node_prev)
-                node_prev =self.graph.get_node(node_prev).prev
+                node_prev = self.graph.get_node(node_prev).prev
             path_list.insert(0, id1)
+
         else:
             path = float('inf')
 
