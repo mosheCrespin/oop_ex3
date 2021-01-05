@@ -5,7 +5,7 @@ from queue import PriorityQueue as PQ
 import copy
 import collections
 from typing import List
-
+import json
 
 
 def intersection(l1, l2):
@@ -55,7 +55,7 @@ class GraphAlgo(GraphAlgoInterface):
         path = float('inf')
         path_list = []
 
-        if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.all_in_edges_of_node(id2) == {} or self.graph.all_in_edges_of_node(id2) == None:
+        if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.all_in_edges_of_node(id2) == {} or self.graph.all_out_edges_of_node(id1) == {}:
             return (path, path_list)
 
         if id1 == id2:
@@ -80,14 +80,15 @@ class GraphAlgo(GraphAlgoInterface):
 
         return (path, path_list)
 
-    def dijkstra (self, start: int, dest: int):
+    def dijkstra(self, start: int, dest: int):
         priority_qeueu = PQ()
         node_curr = self.graph.get_node(start)
         node_curr.set_prev(start)
         node_curr.set_distance(0)
         priority_qeueu.put(node_curr)
 
-        while (priority_qeueu.not_empty and node_curr.id() != dest):
+
+        while(priority_qeueu.not_empty and node_curr.id() != dest):
 
             node_curr = priority_qeueu.get()
 
@@ -97,12 +98,13 @@ class GraphAlgo(GraphAlgoInterface):
 
                 if (node_na.prev == -1):
                     node_na.set_prev(node_curr.id())
-                    node_na.set_distance(node_curr.distance+edge_weight)
+                    node_na.set_distance(node_curr.distance + edge_weight)
                     priority_qeueu.put(node_na)
 
                 elif (node_na.distance > node_curr.distance + edge_weight):
                     node_na.set_prev(node_curr.id())
                     node_na.set_distance(node_curr.distance + edge_weight)
+
 
     def reset_prevAndDist (self):
         for node in self.graph.my_graph.values():
