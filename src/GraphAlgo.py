@@ -52,7 +52,7 @@ class GraphAlgo(GraphAlgoInterface):
         pass
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        path = 'inf'
+        path = float('inf')
         path_list = []
 
         if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.all_in_edges_of_node(id2) is None:
@@ -64,7 +64,7 @@ class GraphAlgo(GraphAlgoInterface):
             return (path, path_list)
 
         self.reset_prevAndDist()
-        self.dijkstra(id2, id2)
+        self.dijkstra(id1, id2)
 
         path = self.graph.get_node(id2).distance
         path_list.insert(0,id2)
@@ -76,7 +76,7 @@ class GraphAlgo(GraphAlgoInterface):
                 node_prev =self.graph.get_node(node_prev).prev
             path_list.insert(0, id1)
         else:
-            path = 'inf'
+            path = float('inf')
 
         return (path, path_list)
 
@@ -84,6 +84,7 @@ class GraphAlgo(GraphAlgoInterface):
         priority_qeueu = PQ()
         node_curr = self.graph.get_node(start)
         node_curr.set_prev(start)
+        node_curr.set_distance(0)
         priority_qeueu.put(node_curr)
 
         while (priority_qeueu.not_empty and node_curr.id() != dest):
@@ -102,8 +103,6 @@ class GraphAlgo(GraphAlgoInterface):
                 elif (node_na.distance > node_curr.distance + edge_weight):
                     node_na.set_prev(node_curr.id())
                     node_na.set_distance(node_curr.distance + edge_weight)
-
-
 
     def reset_prevAndDist (self):
         for node in self.graph.my_graph.values():
