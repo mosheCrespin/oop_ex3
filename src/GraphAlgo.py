@@ -55,7 +55,7 @@ class GraphAlgo(GraphAlgoInterface):
         path = float('inf')
         path_list = []
 
-        if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.all_in_edges_of_node(id2) == {} or self.graph.all_out_edges_of_node(id1) == {}:
+        if not self.graph.has_node(id1) or not self.graph.has_node(id2) or self.graph.all_in_edges_of_node(id2) == {}:
             return (path, path_list)
 
         if id1 == id2:
@@ -67,10 +67,12 @@ class GraphAlgo(GraphAlgoInterface):
         self.dijkstra(id1, id2)
 
         path = self.graph.get_node(id2).distance
-        path_list.insert(0,id2)
-        node_prev = self.graph.get_node(id2).prev
 
         if(path != -1):
+
+            path_list.insert(0, id2)
+            node_prev = self.graph.get_node(id2).prev
+
             while(node_prev != id1):
                 path_list.insert(0, node_prev)
                 node_prev =self.graph.get_node(node_prev).prev
@@ -88,7 +90,7 @@ class GraphAlgo(GraphAlgoInterface):
         priority_qeueu.put(node_curr)
 
 
-        while(priority_qeueu.not_empty and node_curr.id() != dest):
+        while(priority_qeueu.qsize() != 0 and node_curr.id() != dest):
 
             node_curr = priority_qeueu.get()
 
