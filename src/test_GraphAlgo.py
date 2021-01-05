@@ -70,5 +70,24 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(6, 7, 10)
         self.assertEqual(3,len(graph.connected_components()))
 
+
+    def test_plot(self):
+        g = DiGraph()
+        graph = GraphAlgo(g)
+        for i in range(1, 20):
+            g.add_node(i)
+        g.add_edge(1, 2, 10)
+        g.add_edge(2, 1, 10)
+        g.add_edge(1, 3, 1)
+        g.add_edge(3, 1, 10)
+        g.add_edge(2, 4, 10)
+        g.add_edge(1, 7, 10)
+        g.add_edge(7, 5, 10)
+        g.add_edge(5, 7, 10)
+        g.add_edge(7, 6, 10)
+        g.add_edge(6, 7, 10)
+        graph.plot_graph()
+
+
 if __name__ == '__main__':
     unittest.main()

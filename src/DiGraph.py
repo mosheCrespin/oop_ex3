@@ -1,12 +1,25 @@
 from src.GraphInterface import GraphInterface
+import random
+
 
 
 class NodeData:
+    random.seed(10)
     def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
         self.node_id = node_id
         self.pos = pos
         self.prev = prev
         self.distance = distance
+        if pos is None:
+            x = random.uniform(1, 2)
+            y = random.uniform(1, 2)
+            self.pos = (x, y, 0.0)
+
+    def get_node_id(self):
+        return self.node_id
+
+    def get_pos(self):
+        return self.pos
 
     def __repr__(self):
         return repr((self.node_id, self.pos))
@@ -129,6 +142,9 @@ class DiGraph(GraphInterface):
 
     def get_out_edges(self) -> dict:
         return self.out_edges
+
+    def get_in_edges(self) -> dict:
+        return self.in_edges
 
     def set_out_edges(self, other: dict) -> None:
         self.out_edges = other
