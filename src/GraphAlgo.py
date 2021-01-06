@@ -1,4 +1,6 @@
 from matplotlib.patches import FancyArrowPatch
+from operator import itemgetter
+
 
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
@@ -30,7 +32,6 @@ class GraphAlgo(GraphAlgoInterface):
             with open(file_name, "r") as file:
                 loaded_graph=DiGraph()
                 f=json.load(file)
-                print(f.get("Edges"))
                 for node in f.get("Nodes"):
                     id=node.get("id")
                     pos=None
@@ -175,28 +176,108 @@ class GraphAlgo(GraphAlgoInterface):
             node.set_prev(-1)
             node.set_distance(-1)
 
-    def drawArrow(self, p1, p2):
+    def drawArrow(self, p1, p2,head_width,width):
         plt.arrow(p1[0], p1[1], p2[0] - p1[0], p2[1] - p1[1],
-                  visible=False, linewidth=0.5, ec="blue", head_width=0.033, fc="blue", in_layout=True,
+                  visible=True, ec="blue",width=width/100, head_width=head_width/2, fc="blue", in_layout=True,
                   length_includes_head=True)
+
+
+    # def plot_graph(self) -> None:
+        # a=[value for value in self.get_graph().get_all_v().values()]
+        # x_vals=[]
+        # y_vals=[]
+        # ids=[]
+        # print(a)
+        # for node in a:
+        #     ids.append(node.get_node_id())
+        #     x,y,z=node.get_pos()
+        #     x_vals.append(x)
+        #     y_vals.append(y)
+        #     # position.append(pos.get_pos())
+        # ax.scatter(x_vals, y_vals)
+
+        # sorted_pos_x=sorted(position, key=itemgetter(0), reverse=True)
+
+        # x_smaller_range = 200
+        # y_smaller_range=200
+        #
+        # old_x=0
+        # old_y=0
+        # for i in self.get_graph().get_all_v().values():
+        #     x, y, z = i.get_pos()
+        #     if abs(old_x-x) < x_smaller_range:
+        #         x_smaller_range=abs(old_x-x)
+        #         old_x=x
+        #     if abs(old_y-y) < y_smaller_range:
+        #         y_smaller_range=abs(old_y-y)
+        #         old_y=y
+
+
+        # for i in self.get_graph().get_all_v().values():
+        #     x, y, z = i.get_pos()
+        #     plt.plot(x, y, 'o', color='blue',
+        #              markersize=15, linewidth=10,
+        #              markerfacecolor='white',
+        #              markeredgecolor='black',
+        #              markeredgewidth=1)
+        #     ax.annotate(i.get_node_id(), (x-x_smaller_range, y),
+        #                 color='black',
+        #                 fontsize=10)  # draw id
+        #     curr_point = np.array([x, y])
+        #     for j in self.get_graph().all_out_edges_of_node(i.get_node_id()).keys():
+        #         adj = self.get_graph().get_node(j)
+        #         x_adj, y_adj, z_adj = adj.get_pos()
+        #         adj_point = np.array([x_adj, y_adj])
+        #         self.drawArrow(curr_point, adj_point,x_smaller_range,y_smaller_range)
+        #
+        # plt.show()
+
+
+
 
     def plot_graph(self) -> None:
         fig, ax = plt.subplots()
-        for i in self.get_graph().get_all_v().values():
-            x, y, z = i.get_pos()
+        x_smaller_range=200
+        y_smaller_range=200
+        old_x=0
+        old_y=0
+
+        ll=self.get_graph().get_all_v().keys()
+        for i in ll:
+            node=self.get_graph().get_node(i)
+            x, y, z = node.get_pos()
             plt.plot(x, y, 'o', color='blue',
                      markersize=15, linewidth=10,
                      markerfacecolor='white',
                      markeredgecolor='black',
                      markeredgewidth=1)
-            ax.annotate(i.get_node_id(), (x - 0.009, y - 0.009),
-                        color='blue',
-                        fontsize=8)  # draw id
+
+            if abs(old_x-x) < x_smaller_range:
+                x_smaller_range=abs(old_x-x)
+                old_x=x
+            if abs(old_y-y) < y_smaller_range:
+                y_smaller_range=abs(old_y-y)
+                old_y=y
+            # ax.annotate(i.get_node_id(), (x - 0.009, y - 0.009),
+            #             color='blue',
+            #             fontsize=8)  # draw id
+        print(f"y range:{y_smaller_range}, x range:{x_smaller_range}")
+
+        for i in ll:
+            node=self.get_graph().get_node(i)
+            x, y, z = node.get_pos()
+            ax.annotate(node.get_node_id(), (x, y+y_smaller_range),
+                        color='black',
+                        fontsize=10)  # draw id
+
+        for i in ll:
+            node = self.get_graph().get_node(i)
+            x, y, z = node.get_pos()
             curr_point = np.array([x, y])
-            for j in self.get_graph().all_out_edges_of_node(i.get_node_id()).keys():
+            for j in self.get_graph().all_out_edges_of_node(i).keys():
                 adj = self.get_graph().get_node(j)
                 x_adj, y_adj, z_adj = adj.get_pos()
                 adj_point = np.array([x_adj, y_adj])
-                self.drawArrow(curr_point, adj_point)
+                self.drawArrow(curr_point, adj_point,x_smaller_range,y_smaller_range)
 
         plt.show()

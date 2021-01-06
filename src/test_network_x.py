@@ -20,8 +20,21 @@ class MyTestCase(unittest.TestCase):
         print(type(graph))
     def test_connected_components(self):
         nx = network_x()
-        nx.load_from_json(file)
+        file_name = "created_graph.json"
+        nx.load_from_json(file_name)
         nx.connected_componnets()
+
+
+
+    def test_save_to_jso(self):
+        nx = network_x()
+        nx.load_from_json(file)
+        nx.save_to_json()
+
+
+
+
+
 
 
 if __name__ == '__main__':

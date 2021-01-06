@@ -11,8 +11,8 @@ class NodeData:
         self.prev = prev
         self.distance = distance
         if pos is None:
-            x = random.uniform(35, 35.1)
-            y = random.uniform(32, 32.1)
+            x = random.uniform(35.0001, 35.0002)
+            y = random.uniform(32.0001,32.0002)
             self.pos = (x, y, 0.0)
 
     def get_pos(self):
@@ -48,7 +48,7 @@ class NodeData:
             del dict["distance"]
 
             x,y,z=self.pos
-            converted_pos=f"{x},{y},{z} jkj"
+            converted_pos=f"{x},{y},{z}"
             dict["pos"]=converted_pos
         except Exception as exc:
             print(exc)

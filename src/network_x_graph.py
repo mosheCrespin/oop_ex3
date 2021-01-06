@@ -49,8 +49,13 @@ class network_x:
 
 
     def connected_componnets(self):
-        b=nx_strong.condensation(self.graph)
+        # b=nx_strong.condensation(self.graph)
+        print(nx_strong.number_strongly_connected_components(self.graph))
 
+
+    def save_to_json(self):
+        with open('networkdata1.json', 'w') as outfile1:
+            outfile1.write(json.dumps(nx.node_link_data(self.graph)))
 
 
 
