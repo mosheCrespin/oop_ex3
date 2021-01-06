@@ -1,12 +1,35 @@
 from src.GraphInterface import GraphInterface
+import random
 
+
+# class EdgeData:
+#     def __init__(self, src: int, dest: int, w: float):
+#         self.src = src
+#         self.dest = dest
+#         self.w = w
+#
+#     def __repr__(self):
+#         return repr((self.src, self.dest, self.w))
+#
+#     def as_dict(self):
+#         dict_edge = self.__dict__
+#         return dict_edge
 
 class NodeData:
-    def __init__(self, id: int, pos: tuple = (), prev: int = -1, distance: float = -1):
-        self.id = id
+    random.seed(10)
+    def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
+        self.id = node_id
         self.pos = pos
         self.prev = prev
         self.distance = distance
+        if pos is None:
+            x = random.uniform(1, 2)
+            y = random.uniform(1, 2)
+            self.pos = (x, y, 0.0)
+
+
+    def get_pos(self):
+        return self.pos
 
     def __repr__(self):
         return repr((self.id, self.pos))
@@ -28,7 +51,7 @@ class NodeData:
     def set_distance(self, distance: float):
         self.distance = distance
 
-    def node_dict(self):
+    def as_dict(self):
         dict = self.__dict__
         try:
             del dict["prev"]
@@ -46,11 +69,7 @@ class DiGraph(GraphInterface):
         self.my_graph = {}
         self.out_edges = {}
         self.in_edges = {}
-
-    def nodes_as_dict(self):
-        Nodes = self.my_graph.values()
-        nodes_as_dict = Nodes.node_dict
-        return nodes_as_dict
+        # self.all_edges = []
 
     def v_size(self) -> int:
         return self.number_of_nodes
@@ -82,6 +101,9 @@ class DiGraph(GraphInterface):
         self.in_edges[id2][id1] = weight
         self.amount_of_changes += 1
         self.number_of_edges += 1
+        # edge = EdgeData(id1, id2, weight)
+        # self.all_edges.append(edge)
+
         return True
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
@@ -139,6 +161,9 @@ class DiGraph(GraphInterface):
 
     def get_out_edges(self) -> dict:
         return self.out_edges
+
+    def get_in_edges(self) -> dict:
+        return self.in_edges
 
     def set_out_edges(self, other: dict) -> None:
         self.out_edges = other
