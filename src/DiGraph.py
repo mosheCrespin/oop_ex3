@@ -2,18 +2,18 @@ from src.GraphInterface import GraphInterface
 
 
 class NodeData:
-    def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
-        self.node_id = node_id
+    def __init__(self, id: int, pos: tuple = (), prev: int = -1, distance: float = -1):
+        self.id = id
         self.pos = pos
         self.prev = prev
         self.distance = distance
 
     def __repr__(self):
-        return repr((self.node_id, self.pos))
+        return repr((self.id, self.pos))
 
     def __eq__(self, other):
         if isinstance(other, NodeData):
-            return self.node_id == other.node_id
+            return self.id == other.id
 
     def __lt__(self, other):
         if isinstance(other, NodeData):
@@ -22,15 +22,20 @@ class NodeData:
             else:
                 return 0
 
-    def id(self):
-        return self.node_id
-
     def set_prev(self, prev: int):
         self.prev = prev
 
     def set_distance(self, distance: float):
         self.distance = distance
 
+    def node_dict(self):
+        dict = self.__dict__
+        try:
+            del dict["prev"]
+            del dict["distance"]
+        except Exception as exc:
+            print(exc)
+        return dict
 
 class DiGraph(GraphInterface):
 
@@ -41,6 +46,11 @@ class DiGraph(GraphInterface):
         self.my_graph = {}
         self.out_edges = {}
         self.in_edges = {}
+
+    def nodes_as_dict(self):
+        Nodes = self.my_graph.values()
+        nodes_as_dict = Nodes.node_dict
+        return nodes_as_dict
 
     def v_size(self) -> int:
         return self.number_of_nodes

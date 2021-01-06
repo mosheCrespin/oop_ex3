@@ -20,8 +20,17 @@ class GraphAlgo(GraphAlgoInterface):
 
     def load_from_json(self, file_name: str) -> bool:
         pass
+    # def disirelize (self):
+    #     return self.nodes_as_dict()
 
     def save_to_json(self, file_name: str) -> bool:
+        graph_to_dict = {}
+        try:
+            graph_to_dict["Nodes"] = [node for node in self.graph.my_graph.values()]
+            with open(file_name, "w") as file:
+                json.dump(graph_to_dict, default = lambda l: l.node_dict(), indent=4, fp=file)
+        except IOError as exp:
+            print(exp)
         pass
 
     def connected_component(self, id1: int) -> list:
@@ -63,6 +72,7 @@ class GraphAlgo(GraphAlgoInterface):
             path_list.append(id1)
             return (path, path_list)
 
+
         self.reset_prevAndDist()
         self.dijkstra(id1, id2)
 
@@ -91,7 +101,7 @@ class GraphAlgo(GraphAlgoInterface):
         priority_qeueu.put(node_curr)
 
 
-        while(priority_qeueu.qsize() != 0 and node_curr.id() != dest):
+        while priority_qeueu.qsize() != 0 and node_curr.id() != dest:
 
             node_curr = priority_qeueu.get()
 
@@ -99,12 +109,12 @@ class GraphAlgo(GraphAlgoInterface):
                 node_na = self.graph.get_node(key)
                 edge_weight = self.graph.get_weight(node_curr.id(), key)
 
-                if (node_na.prev == -1):
+                if node_na.prev == -1:
                     node_na.set_prev(node_curr.id())
                     node_na.set_distance(node_curr.distance + edge_weight)
                     priority_qeueu.put(node_na)
 
-                elif (node_na.distance > node_curr.distance + edge_weight):
+                elif node_na.distance > node_curr.distance + edge_weight:
                     node_na.set_prev(node_curr.id())
                     node_na.set_distance(node_curr.distance + edge_weight)
 

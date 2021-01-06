@@ -46,5 +46,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(0,p)
         self.assertEqual([1],pl)
 
+    def test_save_to_json(self):
+        g = DiGraph()
+        for i in range(0, 5):
+            g.add_node(i)
+        graph = GraphAlgo(g)
+        file = "t.json"
+        graph.save_to_json(file)
+
+
 if __name__ == '__main__':
     unittest.main()
