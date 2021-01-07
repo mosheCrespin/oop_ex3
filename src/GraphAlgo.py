@@ -1,16 +1,14 @@
-from matplotlib.patches import FancyArrowPatch
-from operator import itemgetter
-
 
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
-import GraphInterface
+from src.GraphInterface import GraphInterface
 from queue import PriorityQueue as PQ
 from typing import List
 import json
 import matplotlib.pyplot as plt
 import numpy as np
 from collections import deque
+from matplotlib.patches import ConnectionPatch
 
 
 def intersection(l1, l2):
@@ -18,11 +16,15 @@ def intersection(l1, l2):
 
 
 class GraphAlgo(GraphAlgoInterface):
+    helper_scc = 0
+
     def __init__(self, g: DiGraph = None):
         if g is None:
             g = DiGraph()
-        else:
-            self.graph = g
+        self.graph = g
+        self.dict_scc = {}
+        self.stack_scc = deque()
+        self.scc_list = []
 
     def get_graph(self) -> GraphInterface:
         return self.graph
@@ -30,24 +32,24 @@ class GraphAlgo(GraphAlgoInterface):
     def load_from_json(self, file_name: str) -> bool:
         try:
             with open(file_name, "r") as file:
-                loaded_graph=DiGraph()
-                f=json.load(file)
+                loaded_graph = DiGraph()
+                f = json.load(file)
                 for node in f.get("Nodes"):
-                    id=node.get("id")
-                    pos=None
+                    id = node.get("id")
+                    pos = None
                     if node.get("pos") is not None:
-                        list_pos=node.get("pos").split(",")
-                        x=float(list_pos[0])
-                        y=float(list_pos[1])
-                        z=float(list_pos[2])
-                        pos=(x,y,z)
-                    loaded_graph.add_node(id,pos)
+                        list_pos = node.get("pos").split(",")
+                        x = float(list_pos[0])
+                        y = float(list_pos[1])
+                        z = float(list_pos[2])
+                        pos = (x, y, z)
+                    loaded_graph.add_node(id, pos)
                 for edge in f.get("Edges"):
-                    src=edge.get("src")
-                    dest=edge.get("dest")
-                    w=edge.get("w")
-                    loaded_graph.add_edge(src,dest,w)
-                self.graph=loaded_graph
+                    src = edge.get("src")
+                    dest = edge.get("dest")
+                    w = edge.get("w")
+                    loaded_graph.add_edge(src, dest, w)
+                self.graph = loaded_graph
 
         except IOError as exp:
             print(exp)
@@ -58,10 +60,9 @@ class GraphAlgo(GraphAlgoInterface):
         to_dict = {}
         edge_to_dict = []
         to_dict["Nodes"] = [node for node in self.graph.my_graph.values()]
-        temp={}
         for src in self.graph.my_graph:
-            for dest , weight in self.get_graph().all_out_edges_of_node(src).items():
-                temp={"src": src, "dest" : dest , "w": weight }
+            for dest, weight in self.get_graph().all_out_edges_of_node(src).items():
+                temp = {"src": src, "dest": dest, "w": weight}
                 edge_to_dict.append(temp)
 
         to_dict["Edges"] = edge_to_dict
@@ -71,15 +72,14 @@ class GraphAlgo(GraphAlgoInterface):
         graph_to_dict = self.serialize()
         try:
             with open(file_name, "w") as file:
-                json.dump(graph_to_dict, default = lambda l: l.as_dict(), indent=4, fp=file)
+                json.dump(graph_to_dict, default=lambda l: l.as_dict(), indent=4, fp=file)
 
         except IOError as exp:
             print(exp)
             return False
         return True
 
-
-    def dfs_algorithm_find_connected_nodes(self, id: int) -> list:
+    def dfs_algorithm_find_connected_nodes(self, id: int, old_dict: dict = None) -> list:
         stack = deque()
         visited = {}
         ans = [id]
@@ -91,21 +91,27 @@ class GraphAlgo(GraphAlgoInterface):
                 if visited.get(adj) != 1:
                     stack.append(adj)
                     visited[adj] = 1
-                    ans.append(adj)
+                    if old_dict is None:
+                        ans.append(adj)
+                    elif old_dict.get(adj) == 1:
+                        ans.append(adj)
         return ans
 
     def connected_component(self, id1: int) -> list:
         if not self.get_graph().has_node(id1):
             return []
+        dict_intersection = {}
         list_component_a = self.dfs_algorithm_find_connected_nodes(id1)
         remember_out = self.get_graph().get_out_edges()
         remember_in = self.get_graph().get_in_edges()
         self.get_graph().set_out_edges(remember_in)
         self.get_graph().set_in_edges(remember_out)
-        list_component_b = self.dfs_algorithm_find_connected_nodes(id1)
+        for i in list_component_a:
+            dict_intersection[i] = 1
+        list_component_b = self.dfs_algorithm_find_connected_nodes(id1, dict_intersection)
         self.get_graph().set_out_edges(remember_out)
         self.get_graph().set_in_edges(remember_in)
-        return intersection(list_component_a, list_component_b)
+        return list_component_b
 
     def connected_components(self) -> List[list]:
         ans = []
@@ -118,6 +124,116 @@ class GraphAlgo(GraphAlgoInterface):
                 ans.append(ll)
         return ans
 
+    # def connected_component(self, id1: int) -> list:
+    #     if not self.get_graph().has_node(id1):
+    #         return []
+    #     list_component_a = self.dfs_algorithm_find_connected_nodes(id1)
+    #     remember_out = self.get_graph().get_out_edges()
+    #     remember_in = self.get_graph().get_in_edges()
+    #     self.get_graph().set_out_edges(remember_in)
+    #     self.get_graph().set_in_edges(remember_out)
+    #     list_component_b = self.dfs_algorithm_find_connected_nodes(id1)
+    #     self.get_graph().set_out_edges(remember_out)
+    #     self.get_graph().set_in_edges(remember_in)
+    #     return intersection(list_component_a, list_component_b)
+
+    #
+    # def dfs_scc(self, curr):
+    #     recursive = False
+    #     recur_stack = deque()
+    #     recur_stack.append(curr)
+    #
+    #     while len(recur_stack) != 0:
+    #         recursive=False
+    #         while True:
+    #             curr = recur_stack.pop()
+    #             self.stack_scc.append(curr)
+    #             self.dict_scc[curr]['in_stack'] = True
+    #             self.dict_scc[curr]['index'] = self.dict_scc['global_index']
+    #             self.dict_scc[curr]['low'] = self.dict_scc['global_index']
+    #             self.dict_scc['global_index'] += 1
+    #             for adj in self.graph.all_out_edges_of_node(curr):
+    #                 if self.dict_scc[adj]['index'] == -1:
+    #                     # self.dfs_scc(adj)
+    #                     recur_stack.append(adj)
+    #                     recursive=True
+    #                     break
+    #                 if self.dict_scc[adj]['in_stack']:
+    #                     self.dict_scc[curr]['low'] = min(self.dict_scc[curr]['low'], self.dict_scc[adj][
+    #                         'low'])  # take the minimum index between curr to adj
+    #
+    #             if recursive:
+    #                 break
+    #
+    #             if self.dict_scc[curr]['index'] == self.dict_scc[curr]['low']:  # check if we got to the starting point
+    #                 temp_list = []
+    #                 while len(self.stack_scc) != 0:
+    #                     node = self.stack_scc.pop()
+    #                     self.dict_scc[node]['in_stack'] = False
+    #                     temp_list.append(node)
+    #                     if node == curr:
+    #                         self.scc_list.append(temp_list)
+    #                         break
+    #             break
+    #
+    # def connected_components(self) -> List[list]:
+    #
+    #     for node in self.graph.get_all_v().keys():  # init
+    #         self.dict_scc[node] = {}
+    #         self.dict_scc[node]['index'] = -1
+    #         self.dict_scc[node]['low'] = -1
+    #         self.dict_scc[node]['in_stack'] = False
+    #
+    #     self.dict_scc['global_index'] = 0
+    #
+    #     for node in self.graph.get_all_v().keys():
+    #         if not self.dict_scc[node]['in_stack']:
+    #             self.dfs_scc_recursive_tarjan(node)
+    #
+    #     ans=self.scc_list
+    #     self.scc_list=[]
+    #     return ans
+
+    # def dfs_scc_recursive_tarjan(self, curr):
+    #     self.stack_scc.append(curr)
+    #     self.dict_scc[curr]['in_stack'] = True
+    #     self.dict_scc[curr]['index'] = self.dict_scc['global_index']
+    #     self.dict_scc[curr]['low'] = self.dict_scc['global_index']
+    #     self.dict_scc['global_index'] += 1
+    #     for adj in self.graph.all_out_edges_of_node(curr):
+    #         if self.dict_scc[adj]['index'] == -1:
+    #             self.dfs_scc_recursive_tarjan(adj)
+    #         if self.dict_scc[adj]['in_stack']:
+    #                 self.dict_scc[curr]['low'] = min(self.dict_scc[curr]['low'], self.dict_scc[adj][
+    #                         'low'])  # take the minimum index between curr to adj
+    #     if self.dict_scc[curr]['index'] == self.dict_scc[curr]['low']:  # check if we got to the starting point
+    #         temp_list = []
+    #         while len(self.stack_scc) != 0:
+    #             node = self.stack_scc.pop()
+    #             self.dict_scc[node]['in_stack'] = False
+    #             temp_list.append(node)
+    #             if node == curr:
+    #                 self.scc_list.append(temp_list)
+    #                 break
+
+    # def connected_components(self) -> List[list]:
+    #
+    #     for node in self.graph.get_all_v().keys():  # init
+    #         self.dict_scc[node] = {}
+    #         self.dict_scc[node]['index'] = -1
+    #         self.dict_scc[node]['low'] = -1
+    #         self.dict_scc[node]['in_stack'] = False
+    #
+    #     self.dict_scc['global_index'] = 0
+    #
+    #     for node in self.graph.get_all_v().keys():
+    #         if not self.dict_scc[node]['in_stack']:
+    #             self.dfs_scc(node)
+    #
+    #     ans=self.scc_list
+    #     self.scc_list=[]
+    #     return ans
+
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         path = float('inf')
         path_list = []
@@ -129,7 +245,6 @@ class GraphAlgo(GraphAlgoInterface):
             path = 0
             path_list.append(id1)
             return (path, path_list)
-
 
         self.reset_prevAndDist()
         self.dijkstra(id1, id2)
@@ -158,17 +273,17 @@ class GraphAlgo(GraphAlgoInterface):
 
         while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest:
             node_curr = priority_qeueu.get()
-            for key in self.graph.all_out_edges_of_node( node_curr.get_node_id()).keys():
+            for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
                 node_na = self.graph.get_node(key)
                 edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
 
                 if node_na.prev == -1:
-                    node_na.set_prev( node_curr.get_node_id())
+                    node_na.set_prev(node_curr.get_node_id())
                     node_na.set_distance(node_curr.distance + edge_weight)
                     priority_qeueu.put(node_na)
 
                 elif node_na.distance > node_curr.distance + edge_weight:
-                    node_na.set_prev( node_curr.get_node_id())
+                    node_na.set_prev(node_curr.get_node_id())
                     node_na.set_distance(node_curr.distance + edge_weight)
 
     def reset_prevAndDist(self):
@@ -176,108 +291,76 @@ class GraphAlgo(GraphAlgoInterface):
             node.set_prev(-1)
             node.set_distance(-1)
 
-    def drawArrow(self, p1, p2,head_width,width):
-        plt.arrow(p1[0], p1[1], p2[0] - p1[0], p2[1] - p1[1],
-                  visible=True, ec="blue",width=width/100, head_width=head_width/2, fc="blue", in_layout=True,
-                  length_includes_head=True)
-
-
-    # def plot_graph(self) -> None:
-        # a=[value for value in self.get_graph().get_all_v().values()]
-        # x_vals=[]
-        # y_vals=[]
-        # ids=[]
-        # print(a)
-        # for node in a:
-        #     ids.append(node.get_node_id())
-        #     x,y,z=node.get_pos()
-        #     x_vals.append(x)
-        #     y_vals.append(y)
-        #     # position.append(pos.get_pos())
-        # ax.scatter(x_vals, y_vals)
-
-        # sorted_pos_x=sorted(position, key=itemgetter(0), reverse=True)
-
-        # x_smaller_range = 200
-        # y_smaller_range=200
-        #
-        # old_x=0
-        # old_y=0
-        # for i in self.get_graph().get_all_v().values():
-        #     x, y, z = i.get_pos()
-        #     if abs(old_x-x) < x_smaller_range:
-        #         x_smaller_range=abs(old_x-x)
-        #         old_x=x
-        #     if abs(old_y-y) < y_smaller_range:
-        #         y_smaller_range=abs(old_y-y)
-        #         old_y=y
-
-
-        # for i in self.get_graph().get_all_v().values():
-        #     x, y, z = i.get_pos()
-        #     plt.plot(x, y, 'o', color='blue',
-        #              markersize=15, linewidth=10,
-        #              markerfacecolor='white',
-        #              markeredgecolor='black',
-        #              markeredgewidth=1)
-        #     ax.annotate(i.get_node_id(), (x-x_smaller_range, y),
-        #                 color='black',
-        #                 fontsize=10)  # draw id
-        #     curr_point = np.array([x, y])
-        #     for j in self.get_graph().all_out_edges_of_node(i.get_node_id()).keys():
-        #         adj = self.get_graph().get_node(j)
-        #         x_adj, y_adj, z_adj = adj.get_pos()
-        #         adj_point = np.array([x_adj, y_adj])
-        #         self.drawArrow(curr_point, adj_point,x_smaller_range,y_smaller_range)
-        #
-        # plt.show()
-
-
-
-
     def plot_graph(self) -> None:
         fig, ax = plt.subplots()
-        x_smaller_range=200
-        y_smaller_range=200
-        old_x=0
-        old_y=0
-
-        ll=self.get_graph().get_all_v().keys()
-        for i in ll:
-            node=self.get_graph().get_node(i)
-            x, y, z = node.get_pos()
-            plt.plot(x, y, 'o', color='blue',
-                     markersize=15, linewidth=10,
-                     markerfacecolor='white',
-                     markeredgecolor='black',
-                     markeredgewidth=1)
-
-            if abs(old_x-x) < x_smaller_range:
-                x_smaller_range=abs(old_x-x)
-                old_x=x
-            if abs(old_y-y) < y_smaller_range:
-                y_smaller_range=abs(old_y-y)
-                old_y=y
-            # ax.annotate(i.get_node_id(), (x - 0.009, y - 0.009),
-            #             color='blue',
-            #             fontsize=8)  # draw id
-        print(f"y range:{y_smaller_range}, x range:{x_smaller_range}")
-
-        for i in ll:
-            node=self.get_graph().get_node(i)
-            x, y, z = node.get_pos()
-            ax.annotate(node.get_node_id(), (x, y+y_smaller_range),
-                        color='black',
-                        fontsize=10)  # draw id
-
-        for i in ll:
-            node = self.get_graph().get_node(i)
-            x, y, z = node.get_pos()
+        all_v = self.graph.get_all_v().keys()
+        for node in all_v:
+            x, y, z = self.graph.get_node(node).get_pos()
             curr_point = np.array([x, y])
-            for j in self.get_graph().all_out_edges_of_node(i).keys():
-                adj = self.get_graph().get_node(j)
-                x_adj, y_adj, z_adj = adj.get_pos()
-                adj_point = np.array([x_adj, y_adj])
-                self.drawArrow(curr_point, adj_point,x_smaller_range,y_smaller_range)
+            xyA = curr_point
+            ax.annotate(self.graph.get_node(node).get_node_id(), (x, y),
+                        color='black',
+                        fontsize=12)  # draw id
+            for e in self.graph.all_out_edges_of_node(node).keys():
+                x, y, z = self.graph.get_node(e).get_pos()
+                curr_point = np.array([x, y])
+                xyB = curr_point
+                con = ConnectionPatch(xyA, xyB, "data", "data",
+                                      arrowstyle="-|>", shrinkA=6, shrinkB=6,
+                                      mutation_scale=14, fc="black", color="black")
+                ax.plot([xyA[0], xyB[0]], [xyA[1], xyB[1]], "o", color='gray', markersize=8, linewidth=10)
+                ax.add_artist(con)
 
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.title("My Python Graph")
         plt.show()
+
+    # def drawArrow(self, p1, p2, head_width, width):
+    #     plt.arrow(p1[0], p1[1], p2[0] - p1[0], p2[1] - p1[1],
+    #               visible=True, ec="blue", width=width / 100, head_width=head_width / 2, fc="blue", in_layout=True,
+    #               length_includes_head=True)
+    #
+    #
+    # def plot_graph(self) -> None:
+    #     fig, ax = plt.subplots()
+    #     x_smaller_range = 200
+    #     y_smaller_range = 200
+    #     old_x = 0
+    #     old_y = 0
+    #
+    #     ll = self.get_graph().get_all_v().keys()
+    #     for i in ll:
+    #         node = self.get_graph().get_node(i)
+    #         x, y, z = node.get_pos()
+    #         plt.plot(x, y, 'o', color='blue',
+    #                  markersize=15, linewidth=10,
+    #                  markerfacecolor='white',
+    #                  markeredgecolor='black',
+    #                  markeredgewidth=1)
+    #
+    #         if abs(old_x - x) < x_smaller_range:
+    #             x_smaller_range = abs(old_x - x)
+    #             old_x = x
+    #         if abs(old_y - y) < y_smaller_range:
+    #             y_smaller_range = abs(old_y - y)
+    #             old_y = y
+    #     for i in ll:
+    #         node = self.get_graph().get_node(i)
+    #         x, y, z = node.get_pos()
+    #         ax.annotate(node.get_node_id(), (x, y + y_smaller_range),
+    #                     color='black',
+    #                     fontsize=10)  # draw id
+    #
+    #     for i in ll:
+    #         node = self.get_graph().get_node(i)
+    #         x, y, z = node.get_pos()
+    #         curr_point = np.array([x, y])
+    #         for j in self.get_graph().all_out_edges_of_node(i).keys():
+    #             adj = self.get_graph().get_node(j)
+    #             x_adj, y_adj, z_adj = adj.get_pos()
+    #             adj_point = np.array([x_adj, y_adj])
+    #             self.drawArrow(curr_point, adj_point, x_smaller_range, y_smaller_range)
+    #
+    #
+    #     plt.show()
