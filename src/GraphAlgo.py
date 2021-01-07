@@ -38,6 +38,8 @@ class GraphAlgo(GraphAlgoInterface):
                 json.dump(graph_to_dict, default = lambda l: l.as_dict(), indent=4, fp=file)
         except IOError as exp:
             print(exp)
+            return False
+        return True
 
 
     def dfs_algorithm_find_connected_nodes(self, id: int) -> list:
@@ -117,19 +119,19 @@ class GraphAlgo(GraphAlgoInterface):
         node_curr.set_distance(0)
         priority_qeueu.put(node_curr)
 
-        while priority_qeueu.qsize() != 0 and node_curr.id() != dest:
+        while priority_qeueu.qsize() != 0 and node_curr.id != dest:
             node_curr = priority_qeueu.get()
-            for key in self.graph.all_out_edges_of_node(node_curr.id()).keys():
+            for key in self.graph.all_out_edges_of_node(node_curr.id).keys():
                 node_na = self.graph.get_node(key)
-                edge_weight = self.graph.get_weight(node_curr.id(), key)
+                edge_weight = self.graph.get_weight(node_curr.id, key)
 
                 if node_na.prev == -1:
-                    node_na.set_prev(node_curr.id())
+                    node_na.set_prev(node_curr.id)
                     node_na.set_distance(node_curr.distance + edge_weight)
                     priority_qeueu.put(node_na)
 
                 elif node_na.distance > node_curr.distance + edge_weight:
-                    node_na.set_prev(node_curr.id())
+                    node_na.set_prev(node_curr.id)
                     node_na.set_distance(node_curr.distance + edge_weight)
 
     def reset_prevAndDist(self):
