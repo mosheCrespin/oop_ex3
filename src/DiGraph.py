@@ -6,11 +6,9 @@ import copy
 class NodeData:
     random.seed(10)
 
-    def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
+    def __init__(self, node_id: int, pos: tuple = None):
         self.id = node_id
         self.pos = pos
-        self.prev = prev
-        self.distance = distance
         if pos is None:
             x = random.uniform(35.0001, 35.0002)
             y = random.uniform(32.0001, 32.0002)
@@ -45,12 +43,9 @@ class NodeData:
     def as_dict(self):
         dict = copy.deepcopy(self.__dict__)
         try:
-            del dict["prev"]
-            del dict["distance"]
-
-            x, y, z = self.pos
-            converted_pos = f"{x},{y},{z}"
-            dict["pos"] = converted_pos
+            x,y,z=self.pos
+            converted_pos=f"{x},{y},{z}"
+            dict["pos"]=converted_pos
         except Exception as exc:
             print(exc)
         return dict
@@ -174,11 +169,11 @@ class DiGraph(GraphInterface):
         return self.my_graph
 
     def all_in_edges_of_node(self, id1: int) -> dict:
-        if not self.has_node(id1): return None
+        if not self.has_node(id1): return {}
         return self.in_edges[id1]
 
     def all_out_edges_of_node(self, id1: int) -> dict:
-        if not self.has_node(id1): return None
+        if not self.has_node(id1): return {}
         return self.out_edges[id1]
 
     def get_out_edges(self) -> dict:

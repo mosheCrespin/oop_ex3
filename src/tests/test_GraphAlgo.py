@@ -19,6 +19,7 @@ class MyTestCase(unittest.TestCase):
         graph = GraphAlgo(g)
         (path, path_list) = (25, [0, 2, 3, 4])
         (p, pl) = graph.shortest_path(0, 4)
+        print(p, pl)
         self.assertEqual(path, p)
         self.assertEqual(path_list, pl)
 
@@ -149,6 +150,7 @@ class MyTestCase(unittest.TestCase):
             return graph
 
     def test_load_from_json(self):
+<<<<<<< HEAD:src/tests/test_GraphAlgo.py
         file_name = "to moshe with love.json"
         graph = DiGraph()
         # graph.load_from_json(file_name)
@@ -167,6 +169,17 @@ class MyTestCase(unittest.TestCase):
         print(len(ga.connected_components()))
 
 
+=======
+        file_name = "created_graph.json"
+        graph = GraphAlgo()
+        graph.load_from_json(file_name)
+        # graph.plot_graph()
+        # file = "test20.json"
+        # graph.save_to_json(file)
+        # print(graph.shortest_path(2,5))
+        (p,pl)=graph.shortest_path(1,9)
+        print(p,pl)
+>>>>>>> 69187d6a03178f7c6a8db2d3b800354b281745ed:src/test_GraphAlgo.py
 
 
 if __name__ == '__main__':
