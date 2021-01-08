@@ -9,7 +9,6 @@ class MyTestCase(unittest.TestCase):
         g = DiGraph()
         for i in range(0, 5):
             g.add_node(i)
-        i = 0
         g.add_edge(0, 1, 10)
         g.add_edge(1, 2, 10)
         g.add_edge(0, 2, 5)
@@ -53,10 +52,6 @@ class MyTestCase(unittest.TestCase):
     def test_connected_components(self):
         g=DiGraph()
         graph = GraphAlgo(g)
-        # file_name="to moshe with love.json"
-        # graph.load_from_json(file_name)
-        # print(len(graph.connected_components()))
-
         self.assertEqual(0, len(graph.connected_components()))  # there is no nodes
         for i in range(1, 8):
             g.add_node(i)
@@ -79,30 +74,6 @@ class MyTestCase(unittest.TestCase):
         graph.plot_graph()
 
     def test_plot(self):
-        file_name = "A0.json"
-        graph = GraphAlgo()
-        graph.load_from_json(file_name)
-        graph.plot_graph()
-        file_name = "T0.json"
-        graph = GraphAlgo()
-        graph.load_from_json(file_name)
-        graph.plot_graph()
-        file_name = "A2.json"
-        graph = GraphAlgo()
-        graph.load_from_json(file_name)
-        graph.plot_graph()
-        file_name = "A3.json"
-        graph = GraphAlgo()
-        graph.load_from_json(file_name)
-        graph.plot_graph()
-        file_name = "A4.json"
-        graph = GraphAlgo()
-        graph.load_from_json(file_name)
-        graph.plot_graph()
-        file_name = "A5_edited.json"
-        graph = GraphAlgo()
-        graph.load_from_json(file_name)
-        graph.plot_graph()
         g = DiGraph()
         for i in range(1, 8):
             g.add_node(i)
@@ -120,7 +91,8 @@ class MyTestCase(unittest.TestCase):
         graph = GraphAlgo(g)
         graph.plot_graph()
 
-    def test_save_to_json(self):
+
+    def test_load_and_save(self):
         g = DiGraph()
         for i in range(1, 8):
             g.add_node(i)
@@ -136,50 +108,12 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(7, 6, 10)
         g.add_edge(6, 7, 10)
         graph = GraphAlgo(g)
-        file = "test4.json"
+        file = "tester.json"
         graph.save_to_json(file)
+        temp_g=g
+        graph.load_from_json(file)
+        self.assertEqual(temp_g,graph.get_graph())
 
-        def million_graph_creator(self):
-            graph = DiGraph()
-            for i in range(1, 1000001):
-                graph.add_node(i)
-            for i in range(1, 1000001):
-                for j in (i, i + 10):
-                    x = random.randint(1, 1000000)
-                    graph.add_edge(i, x, weight=1)
-            return graph
-
-    def test_load_from_json(self):
-<<<<<<< HEAD:src/tests/test_GraphAlgo.py
-        file_name = "to moshe with love.json"
-        graph = DiGraph()
-        # graph.load_from_json(file_name)
-
-        # def million_graph_creator(self):
-        #     graph = DiGraph()
-        for i in range(1, 1000001):
-            graph.add_node(i)
-        for i in range(1, 1000001):
-            for j in (i, i + 10):
-                x = random.randint(1, 1000000)
-                graph.add_edge(i, x, 1)
-        ga=GraphAlgo(graph)
-        print(ga.get_graph().number_of_edges)
-        print(ga.get_graph().number_of_nodes)
-        print(len(ga.connected_components()))
-
-
-=======
-        file_name = "created_graph.json"
-        graph = GraphAlgo()
-        graph.load_from_json(file_name)
-        # graph.plot_graph()
-        # file = "test20.json"
-        # graph.save_to_json(file)
-        # print(graph.shortest_path(2,5))
-        (p,pl)=graph.shortest_path(1,9)
-        print(p,pl)
->>>>>>> 69187d6a03178f7c6a8db2d3b800354b281745ed:src/test_GraphAlgo.py
 
 
 if __name__ == '__main__':
