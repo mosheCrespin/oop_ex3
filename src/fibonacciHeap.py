@@ -27,9 +27,9 @@ class fiboHeap:
                 yield node
                 node = node.right
 
-
-        # extract (delete) the min node from the heap in O(log n) time
-        # amortized cost analysis can be found here (http://bit.ly/1ow1Clm)
+        """
+         extract (delete) the min node from the heap in O(log n) time
+        """
         def extract_min(self):
             z = self.min_node
             if z is not None:
@@ -49,7 +49,9 @@ class fiboHeap:
                 self.size -= 1
             return z
 
-        # insert new node into the unordered root list in O(1) time
+        """
+        insert new node into the unordered root list in O(1) time
+        """
         def insert(self, n: NodeData):
             n.left = n.right = n
             self.merge_with_root_list(n)
@@ -58,9 +60,10 @@ class fiboHeap:
             self.size += 1
             return n
 
-
-        # combine root nodes of equal degree to consolidate the heap
-        # by creating a list of unordered binomial trees
+        """
+         combine root nodes of equal degree to consolidate the heap
+         by creating a list of unordered binomial trees
+        """
         def consolidate(self):
             A = [None] * self.size
             nodes = [w for w in self.iterate(self.root_list)]
@@ -69,7 +72,7 @@ class fiboHeap:
                 d = x.degree
                 while A[d] != None:
                     y = A[d]
-                    if x.key > y.key:
+                    if x.distance > y.distance:
                         temp = x
                         x, y = y, temp
                     self.heap_link(y, x)
@@ -84,8 +87,10 @@ class fiboHeap:
                     if A[i].distance < self.min_node.distance:
                         self.min_node = A[i]
 
-        # actual linking of one node to another in the root list
-        # while also updating the child linked list
+        """
+        actual linking of one node to another in the root list
+        updates the child linked list
+        """
         def heap_link(self, y, x):
             self.remove_from_root_list(y)
             y.left = y.right = y
@@ -94,7 +99,9 @@ class fiboHeap:
             y.parent = x
             y.mark = False
 
-        # merge a node with the doubly linked root list
+        """
+         merge a node with the doubly linked root list
+        """
         def merge_with_root_list(self, node):
             if self.root_list is None:
                 self.root_list = node
@@ -104,7 +111,9 @@ class fiboHeap:
                 self.root_list.right.left = node
                 self.root_list.right = node
 
-        # merge a node with the doubly linked child list of a root node
+        """
+         merge a node with the doubly linked child list of a root node
+        """
         def merge_with_child_list(self, parent, node):
             if parent.child is None:
                 parent.child = node
@@ -114,14 +123,18 @@ class fiboHeap:
                 parent.child.right.left = node
                 parent.child.right = node
 
-        # remove a node from the doubly linked root list
+        """
+        remove a node from the doubly linked root list
+        """
         def remove_from_root_list(self, node):
             if node == self.root_list:
                 self.root_list = node.right
             node.left.right = node.right
             node.right.left = node.left
 
-        # remove a node from the doubly linked child list
+        """
+        remove a node from the doubly linked child list
+        """
         def remove_from_child_list(self, parent, node):
             if parent.child == parent.child.right:
                 parent.child = None

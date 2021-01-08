@@ -10,6 +10,7 @@ import numpy as np
 from collections import deque
 from matplotlib.patches import ConnectionPatch
 from src.fibonacciHeap import fiboHeap
+from queue import PriorityQueue as PQ
 
 def intersection(l1, l2):
     return [value for value in l1 if value in l2]
@@ -192,41 +193,16 @@ class GraphAlgo(GraphAlgoInterface):
     @param dest: The end node id
     """
 
-    def dijkstra(self, start: int, dest: int):
-
-        fib_heap =fiboHeap()
-        node_curr = self.graph.get_node(start)
-        node_curr.set_prev(start)
-        node_curr.set_distance(0)
-        fib_heap.insert(node_curr)
-
-        while fib_heap.size != 0 and node_curr.get_node_id() != dest:
-            node_curr = fib_heap.extract_min()
-            for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
-                node_na = self.graph.get_node(key)
-                edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
-
-                if node_na.prev == -1:
-                    node_na.set_prev(node_curr.get_node_id())
-                    node_na.set_distance(node_curr.distance + edge_weight)
-                    fib_heap.insert(node_na)
-
-                elif node_na.distance > node_curr.distance + edge_weight:
-                    node_na.set_prev(node_curr.get_node_id())
-                    node_na.set_distance(node_curr.distance + edge_weight)
-
-
-   
     # def dijkstra(self, start: int, dest: int):
     #
-    #     priority_qeueu = PQ()
+    #     fib_heap = fiboHeap()
     #     node_curr = self.graph.get_node(start)
     #     node_curr.set_prev(start)
     #     node_curr.set_distance(0)
-    #     priority_qeueu.put(node_curr)
+    #     fib_heap.insert(node_curr)
     #
-    #     while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest:
-    #         node_curr = priority_qeueu.get()
+    #     while fib_heap.size != 0 and node_curr.get_node_id() != dest:
+    #         node_curr = fib_heap.extract_min()
     #         for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
     #             node_na = self.graph.get_node(key)
     #             edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
@@ -234,11 +210,36 @@ class GraphAlgo(GraphAlgoInterface):
     #             if node_na.prev == -1:
     #                 node_na.set_prev(node_curr.get_node_id())
     #                 node_na.set_distance(node_curr.distance + edge_weight)
-    #                 priority_qeueu.put(node_na)
+    #                 fib_heap.insert(node_na)
     #
     #             elif node_na.distance > node_curr.distance + edge_weight:
     #                 node_na.set_prev(node_curr.get_node_id())
     #                 node_na.set_distance(node_curr.distance + edge_weight)
+
+
+
+    def dijkstra(self, start: int, dest: int):
+
+        priority_qeueu = PQ()
+        node_curr = self.graph.get_node(start)
+        node_curr.set_prev(start)
+        node_curr.set_distance(0)
+        priority_qeueu.put(node_curr)
+
+        while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest:
+            node_curr = priority_qeueu.get()
+            for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
+                node_na = self.graph.get_node(key)
+                edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
+
+                if node_na.prev == -1:
+                    node_na.set_prev(node_curr.get_node_id())
+                    node_na.set_distance(node_curr.distance + edge_weight)
+                    priority_qeueu.put(node_na)
+
+                elif node_na.distance > node_curr.distance + edge_weight:
+                    node_na.set_prev(node_curr.get_node_id())
+                    node_na.set_distance(node_curr.distance + edge_weight)
 
 
     def reset_prevAndDist(self):

@@ -60,9 +60,23 @@ class MyTestCase(unittest.TestCase):
         my_graph_connected_component_time = end - start
         self.assertTrue(equal_lists(nx_connected_component,my_graph_connected_component))
 
+        # test for shortest path
+
+        start = time.time()
+        nx_shortest_path_len = nx.shortest_path_length(0,8)
+        nx_shortest_path_list = nx.shortest_path_list(0,8)
+        end = time.time()
+        nx_shortest_path_time = end - start
+        start = time.time()
+        my_graph_shortest_path_len,my_graph_shortest_path_list = my_graph.shortest_path(0,8)
+        end = time.time()
+        my_graph_shortest_path_time = end - start
+        self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
+        self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
+
         print("10_nodes_with_80_edges:")
-        print(f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path--")
-        print(f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
+        print(f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
+        print(f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
         print("-"*50)
 
     def test_100_nodes_with_800_edges(self):
@@ -96,11 +110,25 @@ class MyTestCase(unittest.TestCase):
         my_graph_connected_component_time = end - start
         self.assertTrue(equal_lists(nx_connected_component, my_graph_connected_component))
 
+        # test for shortest path
+
+        start = time.time()
+        nx_shortest_path_len = nx.shortest_path_length(9, 99)
+        nx_shortest_path_list = nx.shortest_path_list(9, 99)
+        end = time.time()
+        nx_shortest_path_time = end - start
+        start = time.time()
+        my_graph_shortest_path_len, my_graph_shortest_path_list = my_graph.shortest_path(9, 99)
+        end = time.time()
+        my_graph_shortest_path_time = end - start
+        self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
+        self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
+
         print("100_nodes_with_800_edges:")
         print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path--")
+            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
         print(
-            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
+            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
         print("-" * 50)
 
     def test_1000_nodes_with_8000_edges(self):
@@ -134,11 +162,25 @@ class MyTestCase(unittest.TestCase):
         my_graph_connected_component_time = end - start
         self.assertTrue(equal_lists(nx_connected_component, my_graph_connected_component))
 
+        # test for shortest path
+
+        start = time.time()
+        nx_shortest_path_len = nx.shortest_path_length(0, 999)
+        nx_shortest_path_list = nx.shortest_path_list(0, 999)
+        end = time.time()
+        nx_shortest_path_time = end - start
+        start = time.time()
+        my_graph_shortest_path_len, my_graph_shortest_path_list = my_graph.shortest_path(0, 999)
+        end = time.time()
+        my_graph_shortest_path_time = end - start
+        self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
+        self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
+
         print("1000_nodes_with_8000_edges:")
         print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path--")
+            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
         print(
-            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
+            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
         print("-" * 50)
 
     def test_10000_nodes_with_80000_edges(self):
@@ -172,11 +214,25 @@ class MyTestCase(unittest.TestCase):
         my_graph_connected_component_time = end - start
         self.assertTrue(equal_lists(nx_connected_component, my_graph_connected_component))
 
+        # test for shortest path
+
+        start = time.time()
+        nx_shortest_path_len = nx.shortest_path_length(0, 9999)
+        nx_shortest_path_list = nx.shortest_path_list(0, 9999)
+        end = time.time()
+        nx_shortest_path_time = end - start
+        start = time.time()
+        my_graph_shortest_path_len, my_graph_shortest_path_list = my_graph.shortest_path(0, 9999)
+        end = time.time()
+        my_graph_shortest_path_time = end - start
+        self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
+        self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
+
         print("10000_nodes_with_80000_edges:")
         print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path--")
+            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
         print(
-            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
+            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
         print("-" * 50)
 
     def test_20000_nodes_with_160000_edges(self):
@@ -210,11 +266,25 @@ class MyTestCase(unittest.TestCase):
         my_graph_connected_component_time = end - start
         self.assertTrue(equal_lists(nx_connected_component, my_graph_connected_component))
 
+        # test for shortest path
+
+        start = time.time()
+        nx_shortest_path_len = nx.shortest_path_length(0, 19999)
+        nx_shortest_path_list = nx.shortest_path_list(0, 19999)
+        end = time.time()
+        nx_shortest_path_time = end - start
+        start = time.time()
+        my_graph_shortest_path_len, my_graph_shortest_path_list = my_graph.shortest_path(0, 19999)
+        end = time.time()
+        my_graph_shortest_path_time = end - start
+        self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
+        self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
+
         print("20000_nodes_with_160000_edges:")
         print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path--")
+            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
         print(
-            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
+            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
         print("-" * 50)
 
 
@@ -249,11 +319,26 @@ class MyTestCase(unittest.TestCase):
         my_graph_connected_component_time = end - start
         self.assertTrue(equal_lists(nx_connected_component, my_graph_connected_component))
 
+
+        # test for shortest path
+
+        start = time.time()
+        nx_shortest_path_len = nx.shortest_path_length(0, 29999)
+        nx_shortest_path_list = nx.shortest_path_list(0, 29999)
+        end = time.time()
+        nx_shortest_path_time = end - start
+        start = time.time()
+        my_graph_shortest_path_len, my_graph_shortest_path_list = my_graph.shortest_path(0, 29999)
+        end = time.time()
+        my_graph_shortest_path_time = end - start
+        self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
+        self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
+
         print("30000_nodes_with_240000_edges:")
         print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path--")
+            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
         print(
-            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
+            f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
         print("-" * 50)
 
 if __name__ == '__main__':

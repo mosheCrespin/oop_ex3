@@ -35,8 +35,11 @@ class network_x:
             return False
         return True
 
-    def shortest_path(self, src: int, dest: int):
+    def shortest_path_list(self, src: int, dest: int):
         return nx.shortest_path(self.graph, src, dest, weight='weight')
+
+    def shortest_path_length(self, src: int, dest: int):
+        return nx.shortest_path_length(self.graph, src, dest, weight='weight')
 
     def draw_graph(self):
         nx.draw_networkx(self.graph, nx.get_node_attributes(self.graph, 'pos'), arrows=True, with_labels=True)
