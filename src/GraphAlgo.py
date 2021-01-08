@@ -1,16 +1,15 @@
-from matplotlib.patches import FancyArrowPatch
-from operator import itemgetter
+from abc import ABC
 
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
-import GraphInterface
-from queue import PriorityQueue as PQ
+from src.GraphInterface import GraphInterface
 from typing import List
 import json
 import matplotlib.pyplot as plt
 import numpy as np
 from collections import deque
-from fibonacciHeap import fiboHeap
+from matplotlib.patches import ConnectionPatch
+from src.fibonacciHeap import fiboHeap
 
 def intersection(l1, l2):
     return [value for value in l1 if value in l2]
@@ -22,8 +21,7 @@ class GraphAlgo(GraphAlgoInterface):
     def __init__(self, g: DiGraph = None):
         if g is None:
             g = DiGraph()
-        else:
-            self.graph = g
+        self.graph = g
 
     """
     return the graph on which the algorithm works on.
@@ -39,24 +37,24 @@ class GraphAlgo(GraphAlgoInterface):
     def load_from_json(self, file_name: str) -> bool:
         try:
             with open(file_name, "r") as file:
-                loaded_graph=DiGraph()
-                f=json.load(file)
+                loaded_graph = DiGraph()
+                f = json.load(file)
                 for node in f.get("Nodes"):
-                    id=node.get("id")
-                    pos=None
+                    id = node.get("id")
+                    pos = None
                     if node.get("pos") is not None:
-                        list_pos=node.get("pos").split(",")
-                        x=float(list_pos[0])
-                        y=float(list_pos[1])
-                        z=float(list_pos[2])
-                        pos=(x,y,z)
-                    loaded_graph.add_node(id,pos)
+                        list_pos = node.get("pos").split(",")
+                        x = float(list_pos[0])
+                        y = float(list_pos[1])
+                        z = float(list_pos[2])
+                        pos = (x, y, z)
+                    loaded_graph.add_node(id, pos)
                 for edge in f.get("Edges"):
-                    src=edge.get("src")
-                    dest=edge.get("dest")
-                    w=edge.get("w")
-                    loaded_graph.add_edge(src,dest,w)
-                self.graph=loaded_graph
+                    src = edge.get("src")
+                    dest = edge.get("dest")
+                    w = edge.get("w")
+                    loaded_graph.add_edge(src, dest, w)
+                self.graph = loaded_graph
 
         except IOError as exp:
             print(exp)
@@ -70,10 +68,9 @@ class GraphAlgo(GraphAlgoInterface):
         to_dict = {}
         edge_to_dict = []
         to_dict["Nodes"] = [node for node in self.graph.my_graph.values()]
-        temp={}
         for src in self.graph.my_graph:
-            for dest , weight in self.get_graph().all_out_edges_of_node(src).items():
-                temp={"src": src, "dest" : dest , "w": weight }
+            for dest, weight in self.get_graph().all_out_edges_of_node(src).items():
+                temp = {"src": src, "dest": dest, "w": weight}
                 edge_to_dict.append(temp)
 
         to_dict["Edges"] = edge_to_dict
@@ -88,15 +85,16 @@ class GraphAlgo(GraphAlgoInterface):
         graph_to_dict = self.serialize()
         try:
             with open(file_name, "w") as file:
+
                 json.dump(graph_to_dict, default = lambda l: l.as_dict(), indent=4, fp=file)  # for all objects in graph dump as dict
+
 
         except IOError as exp:
             print(exp)
             return False
         return True
 
-
-    def dfs_algorithm_find_connected_nodes(self, id: int) -> list:
+    def dfs_algorithm_find_connected_nodes(self, id: int, old_dict: dict = None) -> list:
         stack = deque()
         visited = {}
         ans = [id]
@@ -108,7 +106,10 @@ class GraphAlgo(GraphAlgoInterface):
                 if visited.get(adj) != 1:
                     stack.append(adj)
                     visited[adj] = 1
-                    ans.append(adj)
+                    if old_dict is None:
+                        ans.append(adj)
+                    elif old_dict.get(adj) == 1:
+                        ans.append(adj)
         return ans
 
     """
@@ -119,15 +120,18 @@ class GraphAlgo(GraphAlgoInterface):
     def connected_component(self, id1: int) -> list:
         if not self.get_graph().has_node(id1):
             return []
+        dict_intersection = {}
         list_component_a = self.dfs_algorithm_find_connected_nodes(id1)
         remember_out = self.get_graph().get_out_edges()
         remember_in = self.get_graph().get_in_edges()
         self.get_graph().set_out_edges(remember_in)
         self.get_graph().set_in_edges(remember_out)
-        list_component_b = self.dfs_algorithm_find_connected_nodes(id1)
+        for i in list_component_a:
+            dict_intersection[i] = 1
+        list_component_b = self.dfs_algorithm_find_connected_nodes(id1, dict_intersection)
         self.get_graph().set_out_edges(remember_out)
         self.get_graph().set_in_edges(remember_in)
-        return intersection(list_component_a, list_component_b)
+        return list_component_b
 
     """
     Finds all the Strongly Connected Component(SCC) in the graph.
@@ -143,6 +147,7 @@ class GraphAlgo(GraphAlgoInterface):
                     visited[j] = 1
                 ans.append(ll)
         return ans
+
 
     """
     Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
@@ -211,8 +216,7 @@ class GraphAlgo(GraphAlgoInterface):
                     node_na.set_distance(node_curr.distance + edge_weight)
 
 
-    #
-    #
+   
     # def dijkstra(self, start: int, dest: int):
     #
     #     priority_qeueu = PQ()
@@ -382,23 +386,29 @@ class GraphAlgo(GraphAlgoInterface):
 #
 #     return path, path_list
 
-  # def dijkstra(self, start: int, dest: int):
-    #
-    #     pQueue = PQ()
-    #     dijkstra_data = {}                                       # dijkstra_data[node_id] = [pred,dist]
-    #     node_curr = start
-    #
-    #     dijkstra_data[node_curr] = [start, 0]                    # set start pred as start and dist as 0
-    #     pQueue.put(node_curr)
-    #
-    #     while pQueue.qsize() != 0 and node_curr != dest:                                 # if there is nodes in pQueue and dest unexplored
-    #         node_curr = pQueue.get()                                                     # node_curr is the node with lowest dist
-    #         node_curr_dist = dijkstra_data[node_curr][1]
-    #         for node_na, weight in self.graph.all_out_edges_of_node(node_curr).items():  # explore node_curr neighbours
-    #             if not dijkstra_data.get(node_na):                                       # if node_na not visited
-    #                 dijkstra_data[node_na] = [node_curr, node_curr_dist+weight]          # set node_na pred ad node_curr and set dist
-    #                 pQueue.put(node_na)                                                  # add node_na to pQueue for explore
-    #             elif dijkstra_data[node_na][1] > dijkstra_data[node_curr][1]+weight:     # if node_na is visited, compare the dist from start
-    #                 dijkstra_data[node_na] = [node_curr, node_curr_dist+weight]          # if new path is smaller update pred and dist
-    #
-    #     return dijkstra_data
+
+    def plot_graph(self) -> None:
+        fig, ax = plt.subplots()
+        all_v = self.graph.get_all_v().keys()
+        for node in all_v:
+            x, y, z = self.graph.get_node(node).get_pos()
+            curr_point = np.array([x, y])
+            xyA = curr_point
+            ax.annotate(self.graph.get_node(node).get_node_id(), (x, y),
+                        color='black',
+                        fontsize=12)  # draw id
+            for e in self.graph.all_out_edges_of_node(node).keys():
+                x, y, z = self.graph.get_node(e).get_pos()
+                curr_point = np.array([x, y])
+                xyB = curr_point
+                con = ConnectionPatch(xyA, xyB, "data", "data",
+                                      arrowstyle="-|>", shrinkA=6, shrinkB=6,
+                                      mutation_scale=14, fc="black", color="black")
+                ax.plot([xyA[0], xyB[0]], [xyA[1], xyB[1]], "o", color='gray', markersize=8, linewidth=10)
+                ax.add_artist(con)
+
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.title("My Python Graph")
+        plt.show()
+

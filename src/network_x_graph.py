@@ -2,8 +2,6 @@ import json
 
 import networkx as nx
 import matplotlib.pyplot as plt
-import networkx.algorithms.components.strongly_connected as nx_strong
-
 
 
 class network_x:
@@ -37,28 +35,25 @@ class network_x:
             return False
         return True
 
-
-    def shortest_path(self,src:int,dest:int):
-        # print(nx.get_node_attributes(self.graph, 'weight'))
-        print(nx.shortest_path_length(self.graph,src,dest,weight='weight'))
-        return nx.shortest_path(self.graph,src,dest,weight='weight')
+    def shortest_path(self, src: int, dest: int):
+        return nx.shortest_path(self.graph, src, dest, weight='weight')
 
     def draw_graph(self):
         nx.draw_networkx(self.graph, nx.get_node_attributes(self.graph, 'pos'), arrows=True, with_labels=True)
         plt.show()
 
+    def connected_components(self):
+        ans = []
+        for i in nx.strongly_connected_components(self.graph):
+            ans.append(list(i))
+        return ans
 
-    def connected_componnets(self):
-        # b=nx_strong.condensation(self.graph)
-        print(nx_strong.number_strongly_connected_components(self.graph))
+    def connected_component(self, key: int):
+        for i in nx.strongly_connected_components(self.graph):
+            if key in i:
+                return i
+        return []
 
-
-    def save_to_json(self):
-        with open('networkdata1.json', 'w') as outfile1:
+    def save_to_json(self, file_name: str):
+        with open(file_name, 'w') as outfile1:
             outfile1.write(json.dumps(nx.node_link_data(self.graph)))
-
-
-
-
-
-

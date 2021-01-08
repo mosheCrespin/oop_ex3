@@ -2,6 +2,7 @@ from src.GraphInterface import GraphInterface
 import random
 import copy
 
+
 class NodeData:
     random.seed(10)
 
@@ -14,7 +15,7 @@ class NodeData:
         self.parent = self.child = self.left = self.right = None
         if pos is None:
             x = random.uniform(35.0001, 35.0002)
-            y = random.uniform(32.0001,32.0002)
+            y = random.uniform(32.0001, 32.0002)
             self.pos = (x, y, 0.0)
 
     def get_pos(self):
@@ -48,6 +49,11 @@ class NodeData:
         try:
             del dict["prev"]
             del dict["distance"]
+            del dict["degree"]
+            del dict["parent"]
+            del dict["child"]
+            del dict["left"]
+            del dict["right"]
 
             x,y,z=self.pos
             converted_pos=f"{x},{y},{z}"
@@ -66,6 +72,35 @@ class DiGraph(GraphInterface):
         self.my_graph = {}
         self.out_edges = {}
         self.in_edges = {}
+
+    def __repr__(self):
+        str = f"Graph: |V|={self.number_of_nodes} , |E|= {self.number_of_edges}"
+        temp = ''
+        dict_i = {}
+        for i in self.my_graph.keys():
+            temp = f"{i}: |edges out| {len(self.all_out_edges_of_node(i))} |edges in| {len(self.all_in_edges_of_node(i))}"
+            dict_i[i] = temp
+        ll = []
+        ll.append(str)
+        ll.append(repr(dict_i))
+        ans = "\n".join(ll)
+        return ans
+
+    def __eq__(self, other):
+        if not isinstance(other, DiGraph):
+            return False
+        if self.number_of_nodes != other.number_of_nodes or self.number_of_edges != other.number_of_edges or self.amount_of_changes != other.amount_of_changes:
+            return False
+        nodes_set_self = set(self.get_all_v().keys())
+        nodes_set_other = set(other.get_all_v().keys())
+        final_set = nodes_set_self.intersection(nodes_set_other)
+        if len(final_set) != self.number_of_nodes:
+            return False
+        for i in self.get_all_v().keys():
+            if len(set(self.all_out_edges_of_node(i).keys()).intersection(
+                    set(other.all_out_edges_of_node(i).keys()))) != len(self.all_out_edges_of_node(i)):
+                return False
+        return True
 
     def v_size(self) -> int:
         return self.number_of_nodes
@@ -89,7 +124,7 @@ class DiGraph(GraphInterface):
             return self.out_edges.get(id1).get(id2)
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        if not self.has_node(id1) or not self.has_node(id2):
+        if not self.has_node(id1) or not self.has_node(id2) or weight < 0:
             return False
         if self.has_edge(id1, id2):
             return False
@@ -146,11 +181,11 @@ class DiGraph(GraphInterface):
         return self.my_graph
 
     def all_in_edges_of_node(self, id1: int) -> dict:
-        if not self.has_node(id1): return None
+        if not self.has_node(id1): return {}
         return self.in_edges[id1]
 
     def all_out_edges_of_node(self, id1: int) -> dict:
-        if not self.has_node(id1): return None
+        if not self.has_node(id1): return {}
         return self.out_edges[id1]
 
     def get_out_edges(self) -> dict:
