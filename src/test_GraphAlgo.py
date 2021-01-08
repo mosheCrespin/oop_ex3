@@ -6,26 +6,24 @@ from src.GraphAlgo import GraphAlgo
 class MyTestCase(unittest.TestCase):
     def test_shortest_path(self):
         g = DiGraph()
-        for i in range(0, 5):
+        for i in range(0, 6):
             g.add_node(i)
         i = 0
-        g.add_edge(0, 1, 10)
+        g.add_edge(5, 0, 40)
+        g.add_edge(0, 5, 40)
         g.add_edge(1, 2, 10)
         g.add_edge(0, 2, 5)
-        g.add_edge(2, 3, 10)
-        g.add_edge(3, 4, 10)
-
+        g.add_edge(2, 0, 10)
+        g.add_edge(5, 4, 10)
+        g.add_edge(4, 2, 5)
         graph = GraphAlgo(g)
-        (path, path_list) = (25, [0, 2, 3, 4])
-        (p, pl) = graph.shortest_path(0, 4)
+        (path, path_list) = (25, [5, 4, 2, 0])
+        (p, pl) = graph.shortest_path(5, 0)
         print(p, pl)
         self.assertEqual(path, p)
         self.assertEqual(path_list, pl)
 
-        (path0, path_list0) = (float('inf'), [])
-        (p0, pl0) = graph.shortest_path(4, 0)
-        self.assertEqual(path0, p0)
-        self.assertEqual(path_list0, pl0)
+
 
     def test_connected_component(self):
         g = DiGraph()

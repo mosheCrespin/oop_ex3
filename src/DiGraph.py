@@ -5,9 +5,13 @@ import copy
 class NodeData:
     random.seed(10)
 
-    def __init__(self, node_id: int, pos: tuple = None):
+    def __init__(self, node_id: int, pos: tuple = None, prev: int = -1, distance: float = -1):
         self.id = node_id
         self.pos = pos
+        self.prev = prev
+        self.distance = distance
+        self.degree = 0
+        self.parent = self.child = self.left = self.right = None
         if pos is None:
             x = random.uniform(35.0001, 35.0002)
             y = random.uniform(32.0001,32.0002)
@@ -42,6 +46,9 @@ class NodeData:
     def as_dict(self):
         dict = copy.deepcopy(self.__dict__)
         try:
+            del dict["prev"]
+            del dict["distance"]
+
             x,y,z=self.pos
             converted_pos=f"{x},{y},{z}"
             dict["pos"]=converted_pos
