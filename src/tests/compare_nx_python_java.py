@@ -103,6 +103,9 @@ class MyTestCase(unittest.TestCase):
             f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
         print("-" * 50)
 
+
+
+
     def test_1000_nodes_with_8000_edges(self):
         file_name = "comapring_files/G_1000_8000_0.json"
         nx = network_x()
@@ -140,7 +143,6 @@ class MyTestCase(unittest.TestCase):
         print(
             f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path--")
         print("-" * 50)
-
     def test_10000_nodes_with_80000_edges(self):
         file_name = "comapring_files/G_10000_80000_0.json"
         nx = network_x()

@@ -21,7 +21,7 @@ class network_x:
                         list_pos = node.get("pos").split(",")
                         x = float(list_pos[0])
                         y = float(list_pos[1])
-                        pos = (x, y)
+                        pos = (x, y,0.0)
                     loaded_graph.add_node(id, pos=pos)
                 for edge in f.get("Edges"):
                     src = edge.get("src")
