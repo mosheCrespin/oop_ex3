@@ -3,6 +3,8 @@
 ### **About:**
 *this project is used for an implementation of a directed (positive) Weighted Graph in python language.
 in addition we compared the run-time complexity of this project, with a similar project written in Java (ex2) and with networkX library. you can see more about that in our wiki.
+
+
 ![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/readmeGraph.PNG)
 
 ### **how to start?**
@@ -81,6 +83,7 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 
 > #### `Dijkstra's algorithm`:
+>
 >![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/Dijkstra.PNG)
 >
 > Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a graph
