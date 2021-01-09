@@ -1,8 +1,8 @@
 # ex3
 
 ### **About:**
-*this project is used for an implementation of a directed (positive) Weighted Graph in python language.
-in addition we compared the run-time complexity of this project, with a similar project written in Java (ex2) and with networkX library. you can see more about that in our wiki.
+*this project is used for an implementation of a directed (positive) Weighted Graph in python language.*
+*in addition we compared the run-time complexity of this project, with a similar project written in Java (ex2) and with networkX library. you can see more about that in our wiki.*
 
 
 ![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/readmeGraph.PNG)
