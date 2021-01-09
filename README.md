@@ -49,6 +49,7 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 *the `get_node(key)` method returns the node with the given id if this node exist in this graph;
 
+------------------------
 
 **GraphAlgo**
 
