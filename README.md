@@ -3,7 +3,7 @@
 ### **About:**
 *this project is used for an implementation of a directed (positive) Weighted Graph in python language.
 in addition we compared the run-time complexity of this project, with a similar project written in Java (ex2) and with networkX library. you can see more about that in our wiki.
-![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/graph.png)
+![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/readmeGraph.PNG)
 
 ### **how to start?**
 first clone this repository using this following command:
@@ -74,18 +74,22 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 *the `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method;
 
-![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/readmeGraph.PNG)
-
 *the `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`. if `src` is equal to `dest` then the method returns a list with only `src`.
-
-![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/Dijkstra.PNG)
-
 
 *the `plot_graph()` method simply plot this graph, the nodes will be in there given position.
 
-![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/10_nodes_with_80_edges.PNG)
 
 
+> #### `Dijkstra's algorithm`:
+>![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/Dijkstra.PNG)
+>
+> Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a graph
+>
+> the implementation relies on using Priority Queue
+>
+> the time complexity is O((|E|+|V|)log |V|)
+>
+> for more reading- https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 
 
