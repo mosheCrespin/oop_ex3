@@ -1,16 +1,21 @@
 # ex3
+
+### **About:**
 *this project is used for an implementation of a directed (positive) Weighted Graph in python language.
 in addition we compared the run-time complexity of this project, with a similar project written in Java (ex2) and with networkX library. you can see more about that in our wiki.
 
-**how to start?**
-first clone this repository using this following command: `git clone https://github.com/mosheCrespin/oop_ex3.git`
+###**how to start?**
+first clone this repository using this following command:
+ ```
+$git clone https://github.com/mosheCrespin/oop_ex3.git
+ ```
 once the clone finishd there will be an `oop_ex3` folder inside you will see the project.
 
-**some info:**
+###**some info:**
 *there are 3 classes inside `src`-> `NodeData` ,`DiGraph`, `GraphAlgo`;
 *also there is a package called `tests` inside there are all the tests of this project and also inside this repository there is a directory called `comapring_files` that contains all the comparing files for this project, see more about that in our `Wiki` page.
 
-**classes**
+###**classes**
 -------------------------
 **NodeData**
 
