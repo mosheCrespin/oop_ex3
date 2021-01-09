@@ -10,6 +10,8 @@ once the clone finishd there will be an `oop_ex3` folder inside you will see the
 *there are 3 classes inside `src`-> `NodeData` ,`DiGraph`, `GraphAlgo`;
 *also there is a package called `tests` inside there are all the tests of this project and also inside this repository there is a directory called `comapring_files` that contains all the comparing files for this project, see more about that in our `Wiki` page.
 
+**classes**
+-------------------------
 **NodeData**
 
 *this class represents a single vertex of the graph. Each node has 2 instance variables: `key`-a unique  id for this node. `pos`- the position of this vertex, if in the init part of the vertex, the constructor did'nt get the position, then the position will be a random position.there are 4 more instance variables that used for the algorithm part of this prioject- `prev` `distance` `degree` `parent`. 
