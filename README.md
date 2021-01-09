@@ -34,27 +34,27 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 *In this class there are getters for the Instance variables and `__repr__()` ans `__eq__` methods;
 
-*the `get_all_v()` method returns all the vertex of this graph as dictionary format;
+* `get_all_v()` method returns all the vertex of this graph as dictionary format; **_`O(1)`_**
 
-*the `all_in_edges_of_node(key)` returns all the nodes connected to (into) the given node;
+* `all_in_edges_of_node(key)` returns all the nodes connected to (into) the given node; **_`O(1)`_**
 
-*the `all_out_edges_of_node(key)` returns all the nodes connected from the given node;
-
-
-*the `add_edge(key1,key2,weight)` method connect between the given nodes with the given weight. if there is alredy an edge between the nodes or one of the nodes does not exist in the graph, or the weight is negative then the method returns false o.w return true;
-
-*the `addNode(key, pos:None)` method adds the node with the given id and pos to the graph, if the node already exist in the graph, the function does not add this node again, if the pos is none then the positiion will be a random position;
-
-*the `hasEdge(key1,key2)` method, check if the given nodes has edge who connect them;
+* `all_out_edges_of_node(key)` returns all the nodes connected from the given node; **_`O(1)`_**
 
 
-*the `get_weight(node1,node2)` method uses `hasEdge()` method to check if there is an edge between the given nodes, if not the method returns -1. if yes then the method returns the weight between the given nodes;
+* `add_edge(key1,key2,weight)` method connect between the given nodes with the given weight. if there is alredy an edge between the nodes or one of the nodes does not exist in the graph, or the weight is negative then the method returns false o.w return true; **_`O(1)`_**
 
-*the `remove_node(key)` method removes the node from the graph and all of his edges, returns true if the node removed successfully, false o.w;
+* `addNode(key, pos:None)` method adds the node with the given id and pos to the graph, if the node already exist in the graph, the function does not add this node again, if the pos is none then the positiion will be a random position; **_`O(1)`_**
 
-*the `remove_edge(key1,key2)` method uses `hasEdge()` method to check if there is an edge between the given nodes. if yes then the method removes the edge between the given nodes. else the method return false;
+*the `hasEdge(key1,key2)` method, check if the given nodes has edge who connect them; **_`O(1)`_**
 
-*the `get_node(key)` method returns the node with the given id if this node exist in this graph;
+
+*the `get_weight(node1,node2)` method uses `hasEdge()` method to check if there is an edge between the given nodes, if not the method returns -1. if yes then the method returns the weight between the given nodes; **_`O(1)`_**
+
+*the `remove_node(key)` method removes the node from the graph and all of his edges, returns true if the node removed successfully, false o.w; **_`O(K), K = degree of node_id`_**
+
+*the `remove_edge(key1,key2)` method uses `hasEdge()` method to check if there is an edge between the given nodes. if yes then the method removes the edge between the given nodes. else the method return false; **_`O(1)`_**
+
+*the `get_node(key)` method returns the node with the given id if this node exist in this graph; **_`O(1)`_**
 
 ------------------------
 
