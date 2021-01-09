@@ -50,7 +50,8 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 * `get_weight(node1,node2)`- method uses `hasEdge()` method to check if there is an edge between the given nodes, if not the method returns -1. if yes then the method returns the weight between the given nodes; **_`O(1)`_**
 
-* `remove_node(key)`- removes the node from the graph and all of his edges, returns true if the node removed successfully, false o.w; **_`O(K), K = degree of node_id`_**
+* `remove_node(key)`- removes the node from the graph and all of his edges, returns true if the node removed successfully, false o.w; 
+**_`O(K), K = degree of node_id`_**
 
 * `remove_edge(key1,key2)`- method uses `hasEdge()` method to check if there is an edge between the given nodes. if yes then the method removes the edge between the given nodes. else the method return false; **_`O(1)`_**
 
