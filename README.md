@@ -76,7 +76,8 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 * `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method;
 
-* `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`. if `src` is equal to `dest` then the method returns a list with only `src`.
+* `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`.
+if `src` is equal to `dest` then the method returns a list with only `(0 ,[`src`])`.
 
 * `plot_graph()` method simply plot this graph, the nodes will be in there given position.
 
