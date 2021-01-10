@@ -350,13 +350,10 @@ class MyTestCase(unittest.TestCase):
 
         print("-" * 50)
 
-    def test_plot_nodes_with_240000_edges(self):
-        file_name = "comapring_files/G_10_80_1.json"
-        nx = network_x()
-        nx.load_from_json(file_name)
+    def test_plot(self):
+        file_name = "comapring_files/G_10_80_0.json"
         my_graph = GraphAlgo()
         my_graph.load_from_json(file_name)
-        nx.draw_graph()
         my_graph.plot_graph()
 
 

@@ -282,7 +282,7 @@ class GraphAlgo(GraphAlgoInterface):
                 ax.plot([xyA[0], xyB[0]], [xyA[1], xyB[1]], "o", color='gray', markersize=8, linewidth=10)
                 ax.add_artist(con)
 
-        plt.xlabel("x")
-        plt.ylabel("y")
-        plt.title("My Python Graph")
+        plt.xlabel("Xvals")
+        plt.ylabel("Yvals")
+        plt.title("random nodes positions")
         plt.show()
