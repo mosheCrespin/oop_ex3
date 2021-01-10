@@ -103,7 +103,10 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
         self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
 
+
         print("10_nodes_with_80_edges:")
+        print(f"nx_shortest_path: {nx_shortest_path_len}, {nx_shortest_path_list}")
+        print(f"my_graph_shortest_path: {my_graph_shortest_path_len},  {my_graph_shortest_path_list}")
         print(f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
         print(f"run time for networkX\n connected component: {nx_connected_component_time}, connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
         print("-"*50)

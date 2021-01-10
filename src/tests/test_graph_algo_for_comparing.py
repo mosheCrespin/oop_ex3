@@ -18,6 +18,7 @@ class MyTestCase(unittest.TestCase):
         file_name = "comapring_files/G_100_800_0.json"
         graph = GraphAlgo()
         graph.load_from_json(file_name)
+        graph.plot_graph();
         print(f" for graph with {graph.get_graph().v_size()} nodes, and {graph.get_graph().e_size()} edges there are: {len(graph.connected_components())} SCC")
 
     def test_1000_nodes_with_8000_edges(self):
