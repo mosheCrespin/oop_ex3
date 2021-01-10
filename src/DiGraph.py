@@ -2,7 +2,6 @@ from src.GraphInterface import GraphInterface
 import random
 import copy
 
-
 class NodeData:
     random.seed(10)
 

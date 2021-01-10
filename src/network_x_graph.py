@@ -21,7 +21,7 @@ class network_x:
                         list_pos = node.get("pos").split(",")
                         x = float(list_pos[0])
                         y = float(list_pos[1])
-                        pos = (x, y)
+                        pos = (x, y,0.0)
                     loaded_graph.add_node(id, pos=pos)
                 for edge in f.get("Edges"):
                     src = edge.get("src")
@@ -35,11 +35,12 @@ class network_x:
             return False
         return True
 
+
     def shortest_path_list(self, src: int, dest: int):
-        return nx.shortest_path(self.graph, src, dest, weight='weight')
+        return nx.shortest_path(self.graph, src, dest, weight='weight',method="dijkstra")
 
     def shortest_path_length(self, src: int, dest: int):
-        return nx.shortest_path_length(self.graph, src, dest, weight='weight')
+        return nx.shortest_path_length(self.graph, src, dest, weight='weight',method="dijkstra")
 
     def draw_graph(self):
         nx.draw_networkx(self.graph, nx.get_node_attributes(self.graph, 'pos'), arrows=True, with_labels=True)
@@ -48,7 +49,7 @@ class network_x:
     def connected_components(self):
         ans = []
         for i in nx.strongly_connected_components(self.graph):
-            ans.append(list(i))
+            ans.append(i)
         return ans
 
     def connected_component(self, key: int):

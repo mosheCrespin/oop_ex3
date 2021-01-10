@@ -28,6 +28,7 @@ class GraphAlgo(GraphAlgoInterface):
     This method return the graph on which the algorithm works on.
     Complexity: O(1)
     """
+
     def get_graph(self) -> GraphInterface:
         return self.graph
 
@@ -36,6 +37,7 @@ class GraphAlgo(GraphAlgoInterface):
     @param file_name: The path to the json file
     @returns True if the loading was successful, else returns False 
     """
+
     def load_from_json(self, file_name: str) -> bool:
         try:
             with open(file_name, "r") as file:
@@ -204,7 +206,6 @@ class GraphAlgo(GraphAlgoInterface):
     @param start: The start node id
     @param dest: The end node id
     """
-
     def dijkstra(self, start: int, dest: int):
 
         priority_qeueu = PQ()
@@ -227,6 +228,7 @@ class GraphAlgo(GraphAlgoInterface):
                 elif node_na.distance > node_curr.distance + edge_weight: # if node_na visited compare the dist from start, if the new path is better: update predecessor and dist
                     node_na.set_prev(node_curr.get_node_id()) # update predecessor
                     node_na.set_distance(node_curr.distance + edge_weight) # update dist from start
+
 
 
     """
@@ -371,6 +373,7 @@ class GraphAlgo(GraphAlgoInterface):
         plt.title("My Python Graph")
         plt.show()
 
+
     # def dijkstra(self, start: int, dest: int):
     #
     #     fib_heap = fiboHeap()
@@ -393,3 +396,4 @@ class GraphAlgo(GraphAlgoInterface):
     #             elif node_na.distance > node_curr.distance + edge_weight:
     #                 node_na.set_prev(node_curr.get_node_id())
     #                 node_na.set_distance(node_curr.distance + edge_weight)
+
