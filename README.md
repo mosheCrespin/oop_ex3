@@ -99,14 +99,15 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 >
 >
 > #### `Depth-first search (DFS)`:
+> DFS is an algorithm to traversing and searching on graph.
 >
+> the implementation relies on using stack.
 >
+> the algorith starts at some node in graph and explores as far as possible along each branch before backtracking.
 >
+> the time complexity is O(|E|+|V|)
 >
->
->
->
->
+> for more reading- https://en.wikipedia.org/wiki/Depth-first_search
 
 
 
