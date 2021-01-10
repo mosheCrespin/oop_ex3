@@ -77,7 +77,7 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 * `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method **_`O(|V|(|V|+|E|))`_**;
 
 * `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`.
-if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])` **_O((|E|+|V|)log |V|)_**
+if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])` **_`O((|E|+|V|)log |V|)`_**
 
 * `plot_graph()` method simply plot this graph, the nodes will be in there given position.
 
@@ -93,7 +93,7 @@ if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])
 >
 > the implementation relies on using Priority Queue
 >
-> the time complexity is **_O((|E|+|V|)log |V|)_**
+> the time complexity is **_`O((|E|+|V|)log |V|)`_**
 >
 > for more reading- https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 >
