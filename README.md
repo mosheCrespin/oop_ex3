@@ -96,7 +96,8 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 >
 > for more reading- https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 >
->
+-------------------------
+
 >
 > #### `Depth-first search (DFS)`:
 >
