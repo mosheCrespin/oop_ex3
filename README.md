@@ -33,7 +33,7 @@ once the clone finishd there will be an `oop_ex3` folder inside you will see the
 **DiGraph**
 
 *this class represents a directed (positive) Weighted Graph. this class using NodeData class for the vertex of the graph. each object of this class contains a data structure who holds the nodes of the graph(in dictionary `id` as key `NodeData` as value) called `my_graph`. in addition there are two more dictionaries represents the edges of the graph- `out_edges` represents all the edges of this graph, `in_edges` represents the graph transpose
-in addition, there are 3 instance variables: `number_of_nodes`- the amount of nodes in the graph, `number_of_edges`- the amount of edges in the graph, `amount_of_changes`- the amount of changes made on the graph;
+in addition, there are 3 instance variables: `number_of_nodes`- the amount of nodes in the graph, `number_of_edges`- the amount of edges in the graph, `amount_of_changes`- the amount of changes made on the graph;*
 
 *In this class there are getters for the Instance variables and `__repr__()` ans `__eq__` methods*;
 
@@ -95,7 +95,18 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 > the time complexity is O((|E|+|V|)log |V|)
 >
 > for more reading- https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-
+>
+>
+>
+> #### `Depth-first search (DFS)`:
+>
+>
+>
+>
+>
+>
+>
+>
 
 
 
