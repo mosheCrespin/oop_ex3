@@ -12,12 +12,12 @@ from matplotlib.patches import ConnectionPatch
 from src.fibonacciHeap import fiboHeap
 from queue import PriorityQueue as PQ
 
+
 def intersection(l1, l2):
     return [value for value in l1 if value in l2]
 
 
 class GraphAlgo(GraphAlgoInterface):
-
 
     def __init__(self, g: DiGraph = None):
         if g is None:
@@ -25,13 +25,14 @@ class GraphAlgo(GraphAlgoInterface):
         self.graph = g
 
     """
-    return the graph on which the algorithm works on.
+    This method return the graph on which the algorithm works on.
+    Complexity: O(1)
     """
     def get_graph(self) -> GraphInterface:
         return self.graph
 
     """
-    loads graph from json file.
+    This method loads graph from json file.
     @param file_name: The path to the json file
     @returns True if the loading was successful, else returns False 
     """
@@ -63,8 +64,9 @@ class GraphAlgo(GraphAlgoInterface):
         return True
 
     """
-    returns the graph in json format
+    This method returns the graph in json format
     """
+
     def serialize(self):
         to_dict = {}
         edge_to_dict = []
@@ -78,16 +80,18 @@ class GraphAlgo(GraphAlgoInterface):
         return to_dict
 
     """
-    Saves the graph in JSON format to  file
+    This method Saves the graph in JSON format to  file
     @param file_name: The path to the out file
     @return: True if the save was successful, else returns False 
     """
+
     def save_to_json(self, file_name: str) -> bool:
         graph_to_dict = self.serialize()
         try:
             with open(file_name, "w") as file:
 
-                json.dump(graph_to_dict, default = lambda l: l.as_dict(), indent=4, fp=file)  # for all objects in graph dump as dict
+                json.dump(graph_to_dict, default=lambda l: l.as_dict(), indent=4,
+                          fp=file)  # for all objects in graph dump as dict
 
 
         except IOError as exp:
@@ -118,6 +122,7 @@ class GraphAlgo(GraphAlgoInterface):
     @param id1: The node id
     @return: The list of nodes in the SCC
     """
+
     def connected_component(self, id1: int) -> list:
         if not self.get_graph().has_node(id1):
             return []
@@ -138,6 +143,7 @@ class GraphAlgo(GraphAlgoInterface):
     Finds all the Strongly Connected Component(SCC) in the graph.
     @return: The list all SCC
     """
+
     def connected_components(self) -> List[list]:
         ans = []
         visited = {}
@@ -149,109 +155,92 @@ class GraphAlgo(GraphAlgoInterface):
                 ans.append(ll)
         return ans
 
-
     """
-    Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
+    This method get 2 nodes and calculate the shortest path between them.
+    If there is a path than the method returns the sum of the weights and list of shortest path  (distance,[path list])
+    If there is no path or if one of the nodes does not exist in the graph, than returns returns (float('inf'),[])
+    If id1==id2 than returns (0,[])
+    Shortest path implementation relies on Dijkstra Algorithm 
+    Complexity: O((|E|+|V|) log|V|)
     @param id1: The start node id
     @param id2: The end node id
     @return: The distance of the path, a list of the nodes ids that the path goes through
     """
+
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         path = float('inf')
         path_list = []
 
-        if not self.graph.has_node(id1) or not self.graph.has_node(id2): # if one of nodes not in graph
+        if not self.graph.has_node(id1) or not self.graph.has_node(id2):  # if one of nodes not in graph
             return (path, path_list)
 
-        if id1 == id2:                                                    # path from node to itself
+        if id1 == id2:  # path from node to itself
             path = 0
             path_list.append(id1)
             return (path, path_list)
 
-        self.reset_prevAndDist()
-        self.dijkstra(id1, id2)
+        self.reset_prevAndDist()  # reset all predecessors and dist to -1
+        self.dijkstra(id1, id2)  # update predecessors and dist using dijkstra
 
         path = self.graph.get_node(id2).distance
-        if path != -1:                                                    # if there is path
+        if path != -1:  # if there is path
             path_list.insert(0, id2)
             node_prev = self.graph.get_node(id2).prev
-
-            while node_prev != id1:                                       # go through all predecessors and add to list
+            while node_prev != id1:  # go through all predecessors and add to list
                 path_list.insert(0, node_prev)
                 node_prev = self.graph.get_node(node_prev).prev
             path_list.insert(0, id1)
-        else:
+
+        else:  # if there is no path
             path = float('inf')
 
         return (path, path_list)
 
     """
-    travers the graph through nodes neighbors using dijkstra's algorithm
-    the fiboHeap prior the nodes by dist
-    sets nodes predecessor and dist from start
+    This method travers the graph through nodes neighbors using dijkstra's algorithm using Priority Queue
+    The priority-qeueu prior the nodes by smallest sum of weights from node start.
+    This method sets all nodes predecessor and shortest dist in the path from start to dest.
+    Complexity: O((|E|+|V|) log|V|)
     @param start: The start node id
     @param dest: The end node id
     """
 
-    # def dijkstra(self, start: int, dest: int):
-    #
-    #     fib_heap = fiboHeap()
-    #     node_curr = self.graph.get_node(start)
-    #     node_curr.set_prev(start)
-    #     node_curr.set_distance(0)
-    #     fib_heap.insert(node_curr)
-    #
-    #     while fib_heap.size != 0 and node_curr.get_node_id() != dest:
-    #         node_curr = fib_heap.extract_min()
-    #         for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
-    #             node_na = self.graph.get_node(key)
-    #             edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
-    #
-    #             if node_na.prev == -1:
-    #                 node_na.set_prev(node_curr.get_node_id())
-    #                 node_na.set_distance(node_curr.distance + edge_weight)
-    #                 fib_heap.insert(node_na)
-    #
-    #             elif node_na.distance > node_curr.distance + edge_weight:
-    #                 node_na.set_prev(node_curr.get_node_id())
-    #                 node_na.set_distance(node_curr.distance + edge_weight)
-
-
-
     def dijkstra(self, start: int, dest: int):
 
         priority_qeueu = PQ()
-        node_curr = self.graph.get_node(start)
-        node_curr.set_prev(start)
-        node_curr.set_distance(0)
-        priority_qeueu.put(node_curr)
+        node_curr = self.graph.get_node(start) # the node to explore
+        node_curr.set_prev(start) # set start predecessor to itself
+        node_curr.set_distance(0) # set start dist to 0
+        priority_qeueu.put(node_curr) # add start to priority qeueue
 
-        while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest:
-            node_curr = priority_qeueu.get()
-            for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
-                node_na = self.graph.get_node(key)
-                edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
+        while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest: # while priority qeueue not empty and node dest not explored yet
+            node_curr = priority_qeueu.get() # explore the next node in priority qeueu
+            for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys(): # go through all node curr neighbours
+                node_na = self.graph.get_node(key) # neighbour to check
+                edge_weight = self.graph.get_weight(node_curr.get_node_id(), key) # the edge weight between node_curr to node_na
 
-                if node_na.prev == -1:
-                    node_na.set_prev(node_curr.get_node_id())
-                    node_na.set_distance(node_curr.distance + edge_weight)
+                if node_na.prev == -1: # if node_na not visited
+                    node_na.set_prev(node_curr.get_node_id()) # set node_na predecessor to node_curr
+                    node_na.set_distance(node_curr.distance + edge_weight) # set dist to sum of weights
                     priority_qeueu.put(node_na)
 
-                elif node_na.distance > node_curr.distance + edge_weight:
-                    node_na.set_prev(node_curr.get_node_id())
-                    node_na.set_distance(node_curr.distance + edge_weight)
+                elif node_na.distance > node_curr.distance + edge_weight: # if node_na visited compare the dist from start, if the new path is better: update predecessor and dist
+                    node_na.set_prev(node_curr.get_node_id()) # update predecessor
+                    node_na.set_distance(node_curr.distance + edge_weight) # update dist from start
 
 
+    """
+    This method run over all the nodes and update there prev and dist to -1.
+    Complexity: 0(n)
+    """
     def reset_prevAndDist(self):
         for node in self.graph.my_graph.values():
             node.set_prev(-1)
             node.set_distance(-1)
 
-
-
-    def drawArrow(self, p1, p2,head_width,width):
+    def drawArrow(self, p1, p2, head_width, width):
         plt.arrow(p1[0], p1[1], p2[0] - p1[0], p2[1] - p1[1],
-                  visible=True, ec="blue",width=width/100, head_width=head_width/2, fc="blue", in_layout=True,
+                  visible=True, ec="blue", width=width / 100, head_width=head_width / 2, fc="blue", in_layout=True,
                   length_includes_head=True)
 
     """
@@ -260,16 +249,17 @@ class GraphAlgo(GraphAlgoInterface):
     Otherwise, they will be placed in a random but elegant manner.
     @return: None
     """
+
     def plot_graph(self) -> None:
         fig, ax = plt.subplots()
-        x_smaller_range=200
-        y_smaller_range=200
-        old_x=0
-        old_y=0
+        x_smaller_range = 200
+        y_smaller_range = 200
+        old_x = 0
+        old_y = 0
 
-        ll=self.get_graph().get_all_v().keys()
+        ll = self.get_graph().get_all_v().keys()
         for i in ll:
-            node=self.get_graph().get_node(i)
+            node = self.get_graph().get_node(i)
             x, y, z = node.get_pos()
             plt.plot(x, y, 'o', color='blue',
                      markersize=15, linewidth=10,
@@ -277,21 +267,21 @@ class GraphAlgo(GraphAlgoInterface):
                      markeredgecolor='black',
                      markeredgewidth=1)
 
-            if abs(old_x-x) < x_smaller_range:
-                x_smaller_range=abs(old_x-x)
-                old_x=x
-            if abs(old_y-y) < y_smaller_range:
-                y_smaller_range=abs(old_y-y)
-                old_y=y
+            if abs(old_x - x) < x_smaller_range:
+                x_smaller_range = abs(old_x - x)
+                old_x = x
+            if abs(old_y - y) < y_smaller_range:
+                y_smaller_range = abs(old_y - y)
+                old_y = y
             # ax.annotate(i.get_node_id(), (x - 0.009, y - 0.009),
             #             color='blue',
             #             fontsize=8)  # draw id
         print(f"y range:{y_smaller_range}, x range:{x_smaller_range}")
 
         for i in ll:
-            node=self.get_graph().get_node(i)
+            node = self.get_graph().get_node(i)
             x, y, z = node.get_pos()
-            ax.annotate(node.get_node_id(), (x, y+y_smaller_range),
+            ax.annotate(node.get_node_id(), (x, y + y_smaller_range),
                         color='black',
                         fontsize=10)  # draw id
 
@@ -303,90 +293,58 @@ class GraphAlgo(GraphAlgoInterface):
                 adj = self.get_graph().get_node(j)
                 x_adj, y_adj, z_adj = adj.get_pos()
                 adj_point = np.array([x_adj, y_adj])
-                self.drawArrow(curr_point, adj_point,x_smaller_range,y_smaller_range)
+                self.drawArrow(curr_point, adj_point, x_smaller_range, y_smaller_range)
 
         plt.show()
 
+    # def plot_graph(self) -> None:
+    # a=[value for value in self.get_graph().get_all_v().values()]
+    # x_vals=[]
+    # y_vals=[]
+    # ids=[]
+    # print(a)
+    # for node in a:
+    #     ids.append(node.get_node_id())
+    #     x,y,z=node.get_pos()
+    #     x_vals.append(x)
+    #     y_vals.append(y)
+    #     # position.append(pos.get_pos())
+    # ax.scatter(x_vals, y_vals)
 
+    # sorted_pos_x=sorted(position, key=itemgetter(0), reverse=True)
 
- # def plot_graph(self) -> None:
-        # a=[value for value in self.get_graph().get_all_v().values()]
-        # x_vals=[]
-        # y_vals=[]
-        # ids=[]
-        # print(a)
-        # for node in a:
-        #     ids.append(node.get_node_id())
-        #     x,y,z=node.get_pos()
-        #     x_vals.append(x)
-        #     y_vals.append(y)
-        #     # position.append(pos.get_pos())
-        # ax.scatter(x_vals, y_vals)
+    # x_smaller_range = 200
+    # y_smaller_range=200
+    #
+    # old_x=0
+    # old_y=0
+    # for i in self.get_graph().get_all_v().values():
+    #     x, y, z = i.get_pos()
+    #     if abs(old_x-x) < x_smaller_range:
+    #         x_smaller_range=abs(old_x-x)
+    #         old_x=x
+    #     if abs(old_y-y) < y_smaller_range:
+    #         y_smaller_range=abs(old_y-y)
+    #         old_y=y
 
-        # sorted_pos_x=sorted(position, key=itemgetter(0), reverse=True)
-
-        # x_smaller_range = 200
-        # y_smaller_range=200
-        #
-        # old_x=0
-        # old_y=0
-        # for i in self.get_graph().get_all_v().values():
-        #     x, y, z = i.get_pos()
-        #     if abs(old_x-x) < x_smaller_range:
-        #         x_smaller_range=abs(old_x-x)
-        #         old_x=x
-        #     if abs(old_y-y) < y_smaller_range:
-        #         y_smaller_range=abs(old_y-y)
-        #         old_y=y
-
-
-        # for i in self.get_graph().get_all_v().values():
-        #     x, y, z = i.get_pos()
-        #     plt.plot(x, y, 'o', color='blue',
-        #              markersize=15, linewidth=10,
-        #              markerfacecolor='white',
-        #              markeredgecolor='black',
-        #              markeredgewidth=1)
-        #     ax.annotate(i.get_node_id(), (x-x_smaller_range, y),
-        #                 color='black',
-        #                 fontsize=10)  # draw id
-        #     curr_point = np.array([x, y])
-        #     for j in self.get_graph().all_out_edges_of_node(i.get_node_id()).keys():
-        #         adj = self.get_graph().get_node(j)
-        #         x_adj, y_adj, z_adj = adj.get_pos()
-        #         adj_point = np.array([x_adj, y_adj])
-        #         self.drawArrow(curr_point, adj_point,x_smaller_range,y_smaller_range)
-        #
-        # plt.show()
-
-
-# def shortest_path(self, id1: int, id2: int) -> (float, list):
-#
-#     path = float('inf')
-#     path_list = []
-#
-#     if not self.graph.my_graph.get(id1) or not self.graph.my_graph.get(id2):
-#         return path, path_list
-#
-#     if id1 == id2:
-#         path = 0
-#         path_list.append(id1)
-#         return path, path_list
-#
-#     data = self.dijkstra(id1, id2)
-#     has_path = data.get(id2)
-#     if has_path:
-#         path = data[id2][1]
-#         path_list.append(id2)
-#         node_prev = data[id2][0]
-#         while node_prev != id1:
-#             path_list.append(node_prev)
-#             node_prev = data[node_prev][0]
-#         path_list.append(id1)
-#         path_list.reverse()
-#
-#     return path, path_list
-
+    # for i in self.get_graph().get_all_v().values():
+    #     x, y, z = i.get_pos()
+    #     plt.plot(x, y, 'o', color='blue',
+    #              markersize=15, linewidth=10,
+    #              markerfacecolor='white',
+    #              markeredgecolor='black',
+    #              markeredgewidth=1)
+    #     ax.annotate(i.get_node_id(), (x-x_smaller_range, y),
+    #                 color='black',
+    #                 fontsize=10)  # draw id
+    #     curr_point = np.array([x, y])
+    #     for j in self.get_graph().all_out_edges_of_node(i.get_node_id()).keys():
+    #         adj = self.get_graph().get_node(j)
+    #         x_adj, y_adj, z_adj = adj.get_pos()
+    #         adj_point = np.array([x_adj, y_adj])
+    #         self.drawArrow(curr_point, adj_point,x_smaller_range,y_smaller_range)
+    #
+    # plt.show()
 
     def plot_graph(self) -> None:
         fig, ax = plt.subplots()
@@ -413,3 +371,25 @@ class GraphAlgo(GraphAlgoInterface):
         plt.title("My Python Graph")
         plt.show()
 
+    # def dijkstra(self, start: int, dest: int):
+    #
+    #     fib_heap = fiboHeap()
+    #     node_curr = self.graph.get_node(start)
+    #     node_curr.set_prev(start)
+    #     node_curr.set_distance(0)
+    #     fib_heap.insert(node_curr)
+    #
+    #     while fib_heap.size != 0 and node_curr.get_node_id() != dest:
+    #         node_curr = fib_heap.extract_min()
+    #         for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
+    #             node_na = self.graph.get_node(key)
+    #             edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
+    #
+    #             if node_na.prev == -1:
+    #                 node_na.set_prev(node_curr.get_node_id())
+    #                 node_na.set_distance(node_curr.distance + edge_weight)
+    #                 fib_heap.insert(node_na)
+    #
+    #             elif node_na.distance > node_curr.distance + edge_weight:
+    #                 node_na.set_prev(node_curr.get_node_id())
+    #                 node_na.set_distance(node_curr.distance + edge_weight)
