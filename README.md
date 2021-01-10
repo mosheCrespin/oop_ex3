@@ -66,22 +66,23 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 *this class represents the Theory algorithms for an a directed weighted(positive) graph;
 
-*the `get_graph()` method simply returns the graph;
+* `get_graph()` method simply returns the graph;
 
-*the `load_from_json(file_name)` method simply load the the graph from the given json file, if there is no such file in the memory then the graph will remain with no differences. the method returns `true` or `false` depends on if the process succeeded;
+* `load_from_json(file_name)` method simply load the the graph from the given json file, if there is no such file in the memory then the graph will remain with no differences. the method returns `true` or `false` depends on if the process succeeded;
 
 *the `save_to_json(file_name)` method simply save the graph to a json format, the method returns `true` or `false` depends on if the process succeeded;
 
-*the `connected_component(id)` method returns a list of the Strongly Connected Component(SCC) that the given node is a part of. this method using `dfs` algorithm 2 times, the first time is on the regular graph, the second time is on the transpose of this graph.  
+* `connected_component(id)` method returns a list of the Strongly Connected Component(SCC) that the given node is a part of. this method using `dfs` algorithm 2 times, the first time is on the regular graph, the second time is on the transpose of this graph.  
 
-*the `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method;
+* `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method;
 
-*the `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`. if `src` is equal to `dest` then the method returns a list with only `src`.
+* `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`. if `src` is equal to `dest` then the method returns a list with only `src`.
 
-*the `plot_graph()` method simply plot this graph, the nodes will be in there given position.
+* `plot_graph()` method simply plot this graph, the nodes will be in there given position.
 
 
-
+>
+>
 > #### `Dijkstra's algorithm`:
 >
 >![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/Dijkstra.PNG)
