@@ -16,9 +16,9 @@ once the clone finishd there will be an `oop_ex3` folder inside you will see the
 
 ### **some info:**
 *there are 3 classes inside `src`-> `NodeData` ,`DiGraph`, `GraphAlgo`;*
-*also there is a package called `tests` inside there are all the tests of this project and also inside this repository there is a directory called `comapring_files` that contains all the comparing files for this project, see more about that in our `Wiki` page.*
+*also there is a package called `tests` inside there are all the tests of this project and also inside this repository there is a directory called `comapring_files` that contains all the comparing files for this project, see more about that in our  [Wiki](https://github.com/mosheCrespin/oop_ex3/wiki) page.*
 
-### **classes**
+## **classes**
 -------------------------
 **NodeData**
 
@@ -44,7 +44,7 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 * `all_out_edges_of_node(key)`- returns all the nodes connected from the given node; **_`O(1)`_**
 
 
-* `add_edge(key1,key2,weight)`- - connect between the given nodes with the given weight. if there is alredy an edge between the nodes or one of the nodes does not exist in the graph, or the weight is negative then the method returns false o.w return true; **_`O(1)`_**
+* `add_edge(key1,key2,weight)`-  connect between the given nodes with the given weight. if there is alredy an edge between the nodes or one of the nodes does not exist in the graph, or the weight is negative then the method returns false o.w return true; **_`O(1)`_**
 
 * `addNode(key, pos:None)`- adds the node with the given id and pos to the graph, if the node already exist in the graph, the function does not add this node again, if the pos is none then the positiion will be a random position; **_`O(1)`_**
 
@@ -76,7 +76,8 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 * `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method;
 
-* `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`. if `src` is equal to `dest` then the method returns a list with only `src`.
+* `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`.
+if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])`.
 
 * `plot_graph()` method simply plot this graph, the nodes will be in there given position.
 
@@ -96,9 +97,13 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 >
 > for more reading- https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 >
->
+-------------------------
+
 >
 > #### `Depth-first search (DFS)`:
+>
+> ![](https://github.com/mosheCrespin/oop_ex3/blob/master/src/tests/Compare_img/dfs_algo.jpeg)
+>
 > DFS is an algorithm to traversing and searching on graph.
 >
 > the implementation relies on using stack.
