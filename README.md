@@ -15,17 +15,17 @@ $git clone https://github.com/mosheCrespin/oop_ex3.git
 once the clone finishd there will be an `oop_ex3` folder inside you will see the project.
 
 ### **some info:**
-*there are 3 classes inside `src`-> `NodeData` ,`DiGraph`, `GraphAlgo`;
-*also there is a package called `tests` inside there are all the tests of this project and also inside this repository there is a directory called `comapring_files` that contains all the comparing files for this project, see more about that in our `Wiki` page.
+*there are 3 classes inside `src`-> `NodeData` ,`DiGraph`, `GraphAlgo`;*
+*also there is a package called `tests` inside there are all the tests of this project and also inside this repository there is a directory called `comapring_files` that contains all the comparing files for this project, see more about that in our `Wiki` page.*
 
 ### **classes**
 -------------------------
 **NodeData**
 
-*this class represents a single vertex of the graph. Each node has 2 instance variables: `key`-a unique  id for this node. `pos`- the position of this vertex, if in the init part of the vertex, the constructor did'nt get the position, then the position will be a random position.there are 4 more instance variables that used for the algorithm part of this prioject- `prev` `distance` `degree` `parent`. 
-*In this class there are getters and setters and there is `__repr__` method;
+*this class represents a single vertex of the graph. Each node has 2 instance variables: `key`-a unique  id for this node. `pos`- the position of this vertex, if in the init part of the vertex, the constructor did'nt get the position, then the position will be a random position.there are 4 more instance variables that used for the algorithm part of this prioject- `prev` `distance` `degree` `parent`.* 
+*In this class there are getters and setters and there is `__repr__` method;*
 
-*the `as_dict` nethod return a dictionary copy of this vertex (used for saving the graph to json format)
+*the `as_dict` nethod return a dictionary copy of this vertex (used for saving the graph to json format)*
 
 
 ----------------------------------
@@ -35,7 +35,7 @@ once the clone finishd there will be an `oop_ex3` folder inside you will see the
 *this class represents a directed (positive) Weighted Graph. this class using NodeData class for the vertex of the graph. each object of this class contains a data structure who holds the nodes of the graph(in dictionary `id` as key `NodeData` as value) called `my_graph`. in addition there are two more dictionaries represents the edges of the graph- `out_edges` represents all the edges of this graph, `in_edges` represents the graph transpose
 in addition, there are 3 instance variables: `number_of_nodes`- the amount of nodes in the graph, `number_of_edges`- the amount of edges in the graph, `amount_of_changes`- the amount of changes made on the graph;
 
-*In this class there are getters for the Instance variables and `__repr__()` ans `__eq__` methods;
+*In this class there are getters for the Instance variables and `__repr__()` ans `__eq__` methods*;
 
 * `get_all_v()`-  returns all the vertex of this graph as dictionary format; **_`O(1)`_**
 
@@ -64,13 +64,13 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 **GraphAlgo**
 
-*this class represents the Theory algorithms for an a directed weighted(positive) graph;
+*this class represents the Theory algorithms for an a directed weighted(positive) graph*;
 
 * `get_graph()` method simply returns the graph;
 
 * `load_from_json(file_name)` method simply load the the graph from the given json file, if there is no such file in the memory then the graph will remain with no differences. the method returns `true` or `false` depends on if the process succeeded;
 
-*the `save_to_json(file_name)` method simply save the graph to a json format, the method returns `true` or `false` depends on if the process succeeded;
+* `save_to_json(file_name)` method simply save the graph to a json format, the method returns `true` or `false` depends on if the process succeeded;
 
 * `connected_component(id)` method returns a list of the Strongly Connected Component(SCC) that the given node is a part of. this method using `dfs` algorithm 2 times, the first time is on the regular graph, the second time is on the transpose of this graph.  
 
@@ -80,6 +80,7 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 * `plot_graph()` method simply plot this graph, the nodes will be in there given position.
 
+----------------------------------
 
 >
 >
