@@ -44,7 +44,7 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 * `all_out_edges_of_node(key)`- returns all the nodes connected from the given node; **_`O(1)`_**
 
 
-* `add_edge(key1,key2,weight)`- - connect between the given nodes with the given weight. if there is alredy an edge between the nodes or one of the nodes does not exist in the graph, or the weight is negative then the method returns false o.w return true; **_`O(1)`_**
+* `add_edge(key1,key2,weight)`-  connect between the given nodes with the given weight. if there is alredy an edge between the nodes or one of the nodes does not exist in the graph, or the weight is negative then the method returns false o.w return true; **_`O(1)`_**
 
 * `addNode(key, pos:None)`- adds the node with the given id and pos to the graph, if the node already exist in the graph, the function does not add this node again, if the pos is none then the positiion will be a random position; **_`O(1)`_**
 
