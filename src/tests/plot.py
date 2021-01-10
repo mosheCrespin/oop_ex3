@@ -1,4 +1,3 @@
-import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -50,52 +49,6 @@ def plot():
 
 if __name__ == '__main__':
     plot()
-    #
-    # sum_sp=0.0
-    # print("networkx")
-    # for i in range(0,6):
-    #     sum_sp+=float(input(f"shortest path {i}->"))
-    # sum_ccs=0.0
-    # for i in range(0,6):
-    #     sum_ccs+=float(input(f"connected components{i}->"))
-    #
-    # print(f"shortest path: {sum_sp/6}\n connected components: {sum_ccs/6}")
-    # print("-"*10)
-    #
-    # sum_sp=0.0
-    # print("python")
-    # for i in range(0,6):
-    #     sum_sp+=float(input(f"shortest path {i}->"))
-    # sum_ccs=0.0
-    # for i in range(0,6):
-    #     sum_ccs+=float(input(f"connected components{i}->"))
-    #
-    # sum_cc=0.0
-    # for i in range(0,6):
-    #     sum_cc+=float(input(f"connected component{i}->"))
-    #
-    # print(f"shortest path: {sum_sp / 6}\n connected components: {sum_ccs / 6}\n connected component: {sum_cc/6}")
-    # print("-" * 10)
-
-    #
-    # sum_sp = 0.0
-    # print("java")
-    # for i in range(0, 6):
-    #     sum_sp += float(input(f"shortest path {i}->"))
-    # sum_ccs = 0.0
-    # for i in range(0, 6):
-    #     sum_ccs += float(input(f"connected components{i}->"))
-    #
-    # sum_cc = 0.0
-    # for i in range(0, 6):
-    #     sum_cc += float(input(f"connected component{i}->"))
-    #
-    # print(f"shortest path: {sum_sp / 6}\n connected components: {sum_ccs / 6}\n connected component: {sum_cc / 6}")
-    # print("-" * 10)
-    #
-
-
-
 
 
 

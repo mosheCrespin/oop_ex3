@@ -3,7 +3,7 @@ import time
 
 from typing import List
 from src.GraphAlgo import GraphAlgo
-from src.network_x_graph import network_x
+from src.tests.network_x_graph import network_x
 def intersection(l1, l2):
     return [value for value in l1 if value in l2]
 def equal_lists(l1, l2):
@@ -349,6 +349,16 @@ class MyTestCase(unittest.TestCase):
             f"networkX :\n shortest path: {nx_shortest_path_len}\n shortest path list: {nx_shortest_path_list}\n connected components: {len(nx_scc)}")
 
         print("-" * 50)
+
+    def test_plot_nodes_with_240000_edges(self):
+        file_name = "comapring_files/G_10_80_1.json"
+        nx = network_x()
+        nx.load_from_json(file_name)
+        my_graph = GraphAlgo()
+        my_graph.load_from_json(file_name)
+        nx.draw_graph()
+        my_graph.plot_graph()
+
 
 
 if __name__ == '__main__':

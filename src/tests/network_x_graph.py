@@ -21,7 +21,7 @@ class network_x:
                         list_pos = node.get("pos").split(",")
                         x = float(list_pos[0])
                         y = float(list_pos[1])
-                        pos = (x, y,0.0)
+                        pos = (x, y, 0.0)
                     loaded_graph.add_node(id, pos=pos)
                 for edge in f.get("Edges"):
                     src = edge.get("src")
@@ -35,7 +35,6 @@ class network_x:
             return False
         return True
 
-
     def shortest_path_list(self, src: int, dest: int):
         return nx.shortest_path(self.graph, src, dest, weight='weight')
 
@@ -43,7 +42,7 @@ class network_x:
         return nx.shortest_path_length(self.graph, src, dest, weight='weight')
 
     def draw_graph(self):
-        nx.draw_networkx(self.graph, nx.get_node_attributes(self.graph, 'pos'), arrows=True, with_labels=True)
+        nx.draw_networkx(self.graph)
         plt.show()
 
     def connected_components(self):
@@ -52,6 +51,6 @@ class network_x:
             ans.append(i)
         return ans
 
-    def save_to_json(self, file_name: str):
-        with open(file_name, 'w') as outfile1:
-            outfile1.write(json.dumps(nx.node_link_data(self.graph)))
+    # def save_to_json(self, file_name: str):
+    #     with open(file_name, 'w') as outfile1:
+    #         outfile1.write(json.dumps(nx.node_link_data(self.graph)))

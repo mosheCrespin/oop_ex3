@@ -6,13 +6,17 @@ class TestStringMethods(unittest.TestCase):
 
     def test_add_node(self):
         g0 = DiGraph()
-        for i in range(0, 10):
+        for i in range(0, 10):  # add nodes without position
             g0.add_node(i)
+        self.assertIsNotNone(g0.get_node(4).get_pos())
         self.assertEqual(10, g0.v_size())
         self.assertEqual(10, g0.get_mc())
-        g0.add_node(9)  # added existed node
+        self.assertFalse(g0.add_node(9))  # added existed node
         self.assertEqual(10, g0.v_size())
         self.assertEqual(10, g0.get_mc())
+        pos = (0.1, 0.2, 0.3)
+        self.assertTrue(g0.add_node(10, pos))  # add node with position
+        self.assertEqual(pos, g0.get_node(10).get_pos())
 
     def test_add_edge(self):
         g0 = DiGraph()
@@ -26,6 +30,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertFalse(g0.add_edge(0, 9, 3))  # added exited edge
         self.assertEqual(10, g0.e_size())
         self.assertEqual(20, g0.get_mc())
+        self.assertFalse(g0.add_edge(2, 2, 1))  # added edge between node to itself
 
     def test_remove_edge(self):
         g0 = DiGraph()
@@ -36,6 +41,7 @@ class TestStringMethods(unittest.TestCase):
         g0.remove_edge(0, 9)
         self.assertEqual(9, g0.e_size())
         self.assertEqual(21, g0.get_mc())
+        self.assertFalse(9 in g0.all_out_edges_of_node(0).keys())
 
     def test_remove_node(self):
         g0 = DiGraph()
@@ -52,6 +58,11 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(0, len(g0.all_out_edges_of_node(5)))
         self.assertEqual(9, g0.v_size())
         self.assertEqual(2, g0.e_size())
+        self.assertTrue(g0.remove_node(9))
+        self.assertIsNone(g0.get_all_v().get(9))  # remove node without neighbors
+        self.assertEqual(8, g0.v_size())
+        self.assertEqual(2, g0.e_size())
+        self.assertEqual(18, g0.get_mc())
 
     def test_v_size(self):
         g0 = DiGraph()
@@ -143,8 +154,10 @@ class TestStringMethods(unittest.TestCase):
             g0.add_node(i)
         g0.add_edge(4, 3, 1)
         g0.add_edge(4, 3, 0.5)  # should not update
+        self.assertFalse(g0.add_edge(4,4,1))
         self.assertEqual(1, g0.get_weight(4, 3))
         self.assertEqual(-1, g0.get_weight(4, 5))  # there is no edge
+        self.assertEqual(-1, g0.get_weight(4, 4))  # there is no edge
 
 
 if __name__ == '__main__':

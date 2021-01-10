@@ -27,6 +27,11 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(path0, p0)
         self.assertEqual(path_list0, pl0)
 
+        (p0, pl0) = graph.shortest_path(7, 0)# nodes does not exist
+        self.assertEqual(path0, p0)
+        self.assertEqual(path_list0, pl0)
+
+
     def test_connected_component(self):
         g = DiGraph()
         for i in range(1, 8):
