@@ -2,21 +2,13 @@ import unittest
 import time
 
 from typing import List
-
-from src.DiGraph import DiGraph
 from src.GraphAlgo import GraphAlgo
 from src.network_x_graph import network_x
-
-
 def intersection(l1, l2):
     return [value for value in l1 if value in l2]
-
-
 def equal_lists(l1, l2):
     temp = len(l1)
     return len(intersection(l1, l2)) == temp
-
-
 def equal_list_of_lists(l1: List[list], l2: List[list]):
     counter = 0
     if len(l1) != len(l2):
@@ -27,7 +19,6 @@ def equal_list_of_lists(l1: List[list], l2: List[list]):
                 counter += 1
                 break
     return counter == len(l1)
-
 
 class MyTestCase(unittest.TestCase):
 
@@ -69,6 +60,7 @@ class MyTestCase(unittest.TestCase):
         my_graph_shortest_path_time = end - start
         self.assertTrue(nx_shortest_path_len, my_graph_shortest_path_len)
         self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
+
 
         print("10_nodes_with_80_edges:")
 
@@ -213,7 +205,7 @@ class MyTestCase(unittest.TestCase):
         # test for connected copmponent
 
         start = time.time()
-        my_graph_connected_component = my_graph.connected_component(1)
+        my_graph_connected_component = my_graph.connected_component(1500)
         end = time.time()
         my_graph_connected_component_time = end - start
 
@@ -223,20 +215,6 @@ class MyTestCase(unittest.TestCase):
         nx_shortest_path_len = nx.shortest_path_length(0, 9999)
         nx_shortest_path_list = nx.shortest_path_list(0, 9999)
         end = time.time()
-
-
-        print(f"0-1558  {my_graph.graph.get_weight(0,1558)} ")
-        print(f"1558-1344  {my_graph.graph.get_weight(1558,1344)} ")
-
-        print(f"1344-7407  {my_graph.graph.get_weight(1344,7407)} ")
-        print(f"7407-7772  {my_graph.graph.get_weight(7407,7772)} ")
-        print(f"7772-3703  {my_graph.graph.get_weight(7772,3703)} ")
-        print(f"3703-382  {my_graph.graph.get_weight(3703,382)} ")
-        print(f"382-521  {my_graph.graph.get_weight(382,521)} ")
-
-        print(f"521-4982  {my_graph.graph.get_weight(521,4982)} ")
-        print(f"4982-9999  {my_graph.graph.get_weight(4982,9999)} ")
-
 
 
 

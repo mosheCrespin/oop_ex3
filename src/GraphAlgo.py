@@ -13,10 +13,6 @@ from src.fibonacciHeap import fiboHeap
 from queue import PriorityQueue as PQ
 
 
-# def intersection(l1, l2):
-#     return [value for value in l1 if value in l2]
-
-
 class GraphAlgo(GraphAlgoInterface):
 
     def __init__(self, g: DiGraph = None):
@@ -25,14 +21,15 @@ class GraphAlgo(GraphAlgoInterface):
         self.graph = g
 
     """
-    return the graph on which the algorithm works on.
+    This method return the graph on which the algorithm works on.
+    Complexity: O(1)
     """
 
     def get_graph(self) -> GraphInterface:
         return self.graph
 
     """
-    loads graph from json file.
+    This method loads graph from json file.
     @param file_name: The path to the json file
     @returns True if the loading was successful, else returns False 
     """
@@ -65,7 +62,7 @@ class GraphAlgo(GraphAlgoInterface):
         return True
 
     """
-    returns the graph in json format
+    This method returns the graph in json format
     """
 
     def serialize(self):
@@ -81,7 +78,7 @@ class GraphAlgo(GraphAlgoInterface):
         return to_dict
 
     """
-    Saves the graph in JSON format to  file
+    This method Saves the graph in JSON format to  file
     @param file_name: The path to the out file
     @return: True if the save was successful, else returns False 
     """
@@ -157,7 +154,12 @@ class GraphAlgo(GraphAlgoInterface):
         return ans
 
     """
-    Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
+    This method get 2 nodes and calculate the shortest path between them.
+    If there is a path than the method returns the sum of the weights and list of shortest path  (distance,[path list])
+    If there is no path or if one of the nodes does not exist in the graph, than returns returns (float('inf'),[])
+    If id1==id2 than returns (0,[])
+    Shortest path implementation relies on Dijkstra Algorithm 
+    Complexity: O((|E|+|V|) log|V|)
     @param id1: The start node id
     @param id2: The end node id
     @return: The distance of the path, a list of the nodes ids that the path goes through
@@ -175,77 +177,63 @@ class GraphAlgo(GraphAlgoInterface):
             path_list.append(id1)
             return (path, path_list)
 
-        self.reset_prevAndDist()
-        self.dijkstra(id1, id2)
+        self.reset_prevAndDist()  # reset all predecessors and dist to -1
+        path = self.graph.get_node(id2).distance
+
+        self.dijkstra(id1, id2)  # update predecessors and dist using dijkstra
 
         path = self.graph.get_node(id2).distance
         if path != -1:  # if there is path
             path_list.insert(0, id2)
             node_prev = self.graph.get_node(id2).prev
-
             while node_prev != id1:  # go through all predecessors and add to list
                 path_list.insert(0, node_prev)
                 node_prev = self.graph.get_node(node_prev).prev
             path_list.insert(0, id1)
-        else:
+
+        else:  # if there is no path
             path = float('inf')
 
         return (path, path_list)
 
     """
-    travers the graph through nodes neighbors using dijkstra's algorithm
-    the fiboHeap prior the nodes by dist
-    sets nodes predecessor and dist from start
+    This method travers the graph through nodes neighbors using dijkstra's algorithm using Priority Queue
+    The priority-qeueu prior the nodes by smallest sum of weights from node start.
+    This method sets all nodes predecessor and shortest dist in the path from start to dest.
+    Complexity: O((|E|+|V|) log|V|)
     @param start: The start node id
     @param dest: The end node id
     """
-
-    # def dijkstra(self, start: int, dest: int):
-    #
-    #     fib_heap = fiboHeap()
-    #     node_curr = self.graph.get_node(start)
-    #     node_curr.set_prev(start)
-    #     node_curr.set_distance(0)
-    #     fib_heap.insert(node_curr)
-    #
-    #     while fib_heap.size != 0 and node_curr.get_node_id() != dest:
-    #         node_curr = fib_heap.extract_min()
-    #         for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
-    #             node_na = self.graph.get_node(key)
-    #             edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
-    #
-    #             if node_na.prev == -1:
-    #                 node_na.set_prev(node_curr.get_node_id())
-    #                 node_na.set_distance(node_curr.distance + edge_weight)
-    #                 fib_heap.insert(node_na)
-    #
-    #             elif node_na.distance > node_curr.distance + edge_weight:
-    #                 node_na.set_prev(node_curr.get_node_id())
-    #                 node_na.set_distance(node_curr.distance + edge_weight)
-
     def dijkstra(self, start: int, dest: int):
 
         priority_qeueu = PQ()
-        node_curr = self.graph.get_node(start)
-        node_curr.set_prev(start)
-        node_curr.set_distance(0)
-        priority_qeueu.put(node_curr)
+        node_curr = self.graph.get_node(start) # the node to explore
+        node_curr.set_prev(start) # set start predecessor to itself
+        node_curr.set_distance(0) # set start dist to 0
+        priority_qeueu.put(node_curr) # add start to priority qeueue
 
-        while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest:
-            node_curr = priority_qeueu.get()
-            for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
-                node_na = self.graph.get_node(key)
-                edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
+        while priority_qeueu.qsize() != 0 and node_curr.get_node_id() != dest: # while priority qeueue not empty and node dest not explored yet
+            node_curr = priority_qeueu.get() # explore the next node in priority qeueu
+            for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys(): # go through all node curr neighbours
+                node_na = self.graph.get_node(key) # neighbour to check
 
-                if node_na.prev == -1:
-                    node_na.set_prev(node_curr.get_node_id())
-                    node_na.set_distance(node_curr.distance + edge_weight)
+                edge_weight = self.graph.get_weight(node_curr.get_node_id(), key) # the edge weight between node_curr to node_na
+
+                if node_na.prev == -1: # if node_na not visited
+                    node_na.set_prev(node_curr.get_node_id()) # set node_na predecessor to node_curr
+                    node_na.set_distance(node_curr.distance + edge_weight) # set dist to sum of weights
                     priority_qeueu.put(node_na)
 
-                elif node_na.distance > node_curr.distance + edge_weight:
-                    node_na.set_prev(node_curr.get_node_id())
-                    node_na.set_distance(node_curr.distance + edge_weight)
+                elif node_na.distance > node_curr.distance + edge_weight: # if node_na visited compare the dist from start, if the new path is better: update predecessor and dist
+                    node_na.set_prev(node_curr.get_node_id()) # update predecessor
+                    node_na.set_distance(node_curr.distance + edge_weight) # update dist from start
+                    priority_qeueu.put(node_na)
 
+
+    """
+    This method run over all the nodes and update there prev and dist to -1.
+    Complexity: 0(n)
+    """
     def reset_prevAndDist(self):
         for node in self.graph.my_graph.values():
             node.set_prev(-1)
@@ -359,33 +347,6 @@ class GraphAlgo(GraphAlgoInterface):
     #
     # plt.show()
 
-    # def shortest_path(self, id1: int, id2: int) -> (float, list):
-    #
-    #     path = float('inf')
-    #     path_list = []
-    #
-    #     if not self.graph.my_graph.get(id1) or not self.graph.my_graph.get(id2):
-    #         return path, path_list
-    #
-    #     if id1 == id2:
-    #         path = 0
-    #         path_list.append(id1)
-    #         return path, path_list
-    #
-    #     data = self.dijkstra(id1, id2)
-    #     has_path = data.get(id2)
-    #     if has_path:
-    #         path = data[id2][1]
-    #         path_list.append(id2)
-    #         node_prev = data[id2][0]
-    #         while node_prev != id1:
-    #             path_list.append(node_prev)
-    #             node_prev = data[node_prev][0]
-    #         path_list.append(id1)
-    #         path_list.reverse()
-    #
-    #     return path, path_list
-
     def plot_graph(self) -> None:
         fig, ax = plt.subplots()
         all_v = self.graph.get_all_v().keys()
@@ -410,3 +371,28 @@ class GraphAlgo(GraphAlgoInterface):
         plt.ylabel("y")
         plt.title("My Python Graph")
         plt.show()
+
+
+    # def dijkstra(self, start: int, dest: int):
+    #
+    #     fib_heap = fiboHeap()
+    #     node_curr = self.graph.get_node(start)
+    #     node_curr.set_prev(start)
+    #     node_curr.set_distance(0)
+    #     fib_heap.insert(node_curr)
+    #
+    #     while fib_heap.size != 0 and node_curr.get_node_id() != dest:
+    #         node_curr = fib_heap.extract_min()
+    #         for key in self.graph.all_out_edges_of_node(node_curr.get_node_id()).keys():
+    #             node_na = self.graph.get_node(key)
+    #             edge_weight = self.graph.get_weight(node_curr.get_node_id(), key)
+    #
+    #             if node_na.prev == -1:
+    #                 node_na.set_prev(node_curr.get_node_id())
+    #                 node_na.set_distance(node_curr.distance + edge_weight)
+    #                 fib_heap.insert(node_na)
+    #
+    #             elif node_na.distance > node_curr.distance + edge_weight:
+    #                 node_na.set_prev(node_curr.get_node_id())
+    #                 node_na.set_distance(node_curr.distance + edge_weight)
+
