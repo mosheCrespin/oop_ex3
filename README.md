@@ -66,18 +66,18 @@ in addition, there are 3 instance variables: `number_of_nodes`- the amount of no
 
 *this class represents the Theory algorithms for an a directed weighted(positive) graph*;
 
-* `get_graph()` method simply returns the graph;
+* `get_graph()` method simply returns the graph **_`O(1)`_**;
 
-* `load_from_json(file_name)` method simply load the the graph from the given json file, if there is no such file in the memory then the graph will remain with no differences. the method returns `true` or `false` depends on if the process succeeded;
+* `load_from_json(file_name)` method simply load the the graph from the given json file, if there is no such file in the memory then the graph will remain with no differences. the method returns `true` or `false` depends on if the process succeeded **_`O(|V|+|E|)`_**;
 
-* `save_to_json(file_name)` method simply save the graph to a json format, the method returns `true` or `false` depends on if the process succeeded;
+* `save_to_json(file_name)` method simply save the graph to a json format, the method returns `true` or `false` depends on if the process succeeded **_`O(|V|+|E|)`_**;
 
-* `connected_component(id)` method returns a list of the Strongly Connected Component(SCC) that the given node is a part of. this method using `dfs` algorithm 2 times, the first time is on the regular graph, the second time is on the transpose of this graph.  
+* `connected_component(id)` method returns a list of the Strongly Connected Component(SCC) that the given node is a part of. this method using `dfs` algorithm 2 times, the first time is on the regular graph, the second time is on the transpose of this graph **_`O(|V|+|E|)`_**.  
 
-* `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method;
+* `connected_components()` method returns a list of lists, represents all the SCC of this graph this method using `connected_component()` method **_`O(|V|(|V|+|E|))`_**;
 
 * `shortestPath(src, dest)` method, this method using in Dijkstra's algorithm. it returns a Tuple with the distance of the path and the actual path between `src` to `dest` via List of keys. if `src` or `dest` are not in the graph or one of them does not exist in the graph, than the method returns `(float('inf',[])`.
-if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])`.
+if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])` **_O((|E|+|V|)log |V|)_**
 
 * `plot_graph()` method simply plot this graph, the nodes will be in there given position.
 
@@ -93,7 +93,7 @@ if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])
 >
 > the implementation relies on using Priority Queue
 >
-> the time complexity is O((|E|+|V|)log |V|)
+> the time complexity is **_O((|E|+|V|)log |V|)_**
 >
 > for more reading- https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 >
@@ -110,7 +110,7 @@ if `src` is equal to `dest` then the method returns a list with only `(0 ,[src])
 >
 > the algorith starts at some node in graph and explores as far as possible along each branch before backtracking.
 >
-> the time complexity is O(|E|+|V|)
+> the time complexity is **_`O(|V|+|E|)`_**
 >
 > for more reading- https://en.wikipedia.org/wiki/Depth-first_search
 
