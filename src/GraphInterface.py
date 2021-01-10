@@ -1,7 +1,6 @@
 class GraphInterface:
     """This abstract class represents an interface of a graph."""
 
-
     def v_size(self) -> int:
         """
         Returns the number of vertices in this graph

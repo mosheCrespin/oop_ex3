@@ -13,8 +13,8 @@ from src.fibonacciHeap import fiboHeap
 from queue import PriorityQueue as PQ
 
 
-def intersection(l1, l2):
-    return [value for value in l1 if value in l2]
+# def intersection(l1, l2):
+#     return [value for value in l1 if value in l2]
 
 
 class GraphAlgo(GraphAlgoInterface):

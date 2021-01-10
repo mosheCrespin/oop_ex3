@@ -37,10 +37,10 @@ class network_x:
 
 
     def shortest_path_list(self, src: int, dest: int):
-        return nx.shortest_path(self.graph, src, dest, weight='weight',method="dijkstra")
+        return nx.shortest_path(self.graph, src, dest, weight='weight')
 
     def shortest_path_length(self, src: int, dest: int):
-        return nx.shortest_path_length(self.graph, src, dest, weight='weight',method="dijkstra")
+        return nx.shortest_path_length(self.graph, src, dest, weight='weight')
 
     def draw_graph(self):
         nx.draw_networkx(self.graph, nx.get_node_attributes(self.graph, 'pos'), arrows=True, with_labels=True)
@@ -51,12 +51,6 @@ class network_x:
         for i in nx.strongly_connected_components(self.graph):
             ans.append(i)
         return ans
-
-    def connected_component(self, key: int):
-        for i in nx.strongly_connected_components(self.graph):
-            if key in i:
-                return i
-        return []
 
     def save_to_json(self, file_name: str):
         with open(file_name, 'w') as outfile1:
