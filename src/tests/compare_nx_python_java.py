@@ -64,14 +64,13 @@ class MyTestCase(unittest.TestCase):
 
         print("10_nodes_with_80_edges:")
 
-        print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
-        print(
-            f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
+        # print(
+        #     f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
+        # print(
+        #     f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
 
-        print(f"results: my graph:\n shortest path: {my_graph_shortest_path_len}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
-        print("*"*10)
-        print(f"results: networkX :\n shortest path: {nx_shortest_path_len}\n connected components: {len(nx_scc)}")
+        print(f"python:\n shortest path distance: {my_graph_shortest_path_len}\n shortest path list: {my_graph_shortest_path_list}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
+        print(f"networkX :\n shortest path: {nx_shortest_path_len}\n shortest path list: {nx_shortest_path_list}\n connected components: {len(nx_scc)}")
 
         print("-" * 50)
 
@@ -117,15 +116,15 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
 
         print("100_nodes_with_800_edges:")
-        print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
-        print(
-            f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
+        # print(
+        #     f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
+        # print(
+        #     f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
 
         print(
-            f"results: my graph:\n shortest path: {my_graph_shortest_path_len}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
-        print("*" * 10)
-        print(f"results: networkX :\n shortest path: {nx_shortest_path_len}\n connected components: {len(nx_scc)}")
+            f"python:\n shortest path distance: {my_graph_shortest_path_len}\n shortest path list: {my_graph_shortest_path_list}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
+        print(
+            f"networkX :\n shortest path: {nx_shortest_path_len}\n shortest path list: {nx_shortest_path_list}\n connected components: {len(nx_scc)}")
 
         print("-" * 50)
 
@@ -172,15 +171,15 @@ class MyTestCase(unittest.TestCase):
 
 
         print("1000_nodes_with_8000_edges:")
-        print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
-        print(
-            f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
+        # print(
+        #     f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
+        # print(
+        #     f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
 
         print(
-            f"results: my graph:\n shortest path: {my_graph_shortest_path_len}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
-        print("*" * 10)
-        print(f"results: networkX :\n shortest path: {nx_shortest_path_len}\n connected components: {len(nx_scc)}")
+            f"python:\n shortest path distance: {my_graph_shortest_path_len}\n shortest path list: {my_graph_shortest_path_list}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
+        print(
+            f"networkX :\n shortest path: {nx_shortest_path_len}\n shortest path list: {nx_shortest_path_list}\n connected components: {len(nx_scc)}")
         print("-" * 50)
 
     def test_10000_nodes_with_80000_edges(self):
@@ -233,15 +232,15 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
 
         print("10000_nodes_with_80000_edges:")
-        print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
-        print(
-            f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
+        # print(
+        #     f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
+        # print(
+        #     f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
 
         print(
-            f"results: my graph:\n shortest path: {my_graph_shortest_path_len}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
-        print("*" * 10)
-        print(f"results: networkX :\n shortest path: {nx_shortest_path_len}\n connected components: {len(nx_scc)}")
+            f"python:\n shortest path distance: {my_graph_shortest_path_len}\n shortest path list: {my_graph_shortest_path_list}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
+        print(
+            f"networkX :\n shortest path: {nx_shortest_path_len}\n shortest path list: {nx_shortest_path_list}\n connected components: {len(nx_scc)}")
 
         print("-" * 50)
 
@@ -286,15 +285,15 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(nx_shortest_path_list, my_graph_shortest_path_list)
 
         print("20000_nodes_with_160000_edges:")
-        print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
-        print(
-            f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
+        # print(
+        #     f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
+        # print(
+        #     f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
 
         print(
-            f"results: my graph:\n shortest path: {my_graph_shortest_path_len}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
-        print("*" * 10)
-        print(f"results: networkX :\n shortest path: {nx_shortest_path_len}\n connected components: {len(nx_scc)}")
+            f"python:\n shortest path distance: {my_graph_shortest_path_len}\n shortest path list: {my_graph_shortest_path_list}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
+        print(
+            f"networkX :\n shortest path: {nx_shortest_path_len}\n shortest path list: {nx_shortest_path_list}\n connected components: {len(nx_scc)}")
 
         print("-" * 50)
 
@@ -339,15 +338,15 @@ class MyTestCase(unittest.TestCase):
 
 
         print("30000_nodes_with_240000_edges:")
-        print(
-            f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
-        print(
-            f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
+        # print(
+        #     f"run time for my graph\n connected component: {my_graph_connected_component_time}, connected components: {scc_my_graph_time}, shortest path: {my_graph_shortest_path_time}")
+        # print(
+        #     f"run time for networkX\n connected components: {scc_nx_time}, shortest path: {nx_shortest_path_time}")
 
         print(
-            f"results: my graph:\n shortest path: {my_graph_shortest_path_len}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
-        print("*" * 10)
-        print(f"results: networkX :\n shortest path: {nx_shortest_path_len}\n connected components: {len(nx_scc)}")
+            f"python:\n shortest path distance: {my_graph_shortest_path_len}\n shortest path list: {my_graph_shortest_path_list}\n connected component: {len(my_graph_connected_component)}\n connected components: {len(my_graph_scc)}")
+        print(
+            f"networkX :\n shortest path: {nx_shortest_path_len}\n shortest path list: {nx_shortest_path_list}\n connected components: {len(nx_scc)}")
 
         print("-" * 50)
 
